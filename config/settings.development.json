@@ -1,0 +1,6 @@
+{
+  "defaultAccounts": [
+    { "email": "admin@cgp.com", "password": "test", "role": "admin" },
+    { "email": "normal@cgp.com", "password": "test" }
+  ]
+}
