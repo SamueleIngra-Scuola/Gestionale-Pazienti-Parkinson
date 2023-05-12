@@ -1,5 +1,5 @@
 {
-  "name": "meteor-application-template-react",
+  "name": "Gestionale-Pazienti-Parkinson",
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.20.13",
