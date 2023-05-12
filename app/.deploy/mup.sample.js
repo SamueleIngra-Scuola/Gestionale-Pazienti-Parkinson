@@ -15,8 +15,8 @@ module.exports = {
     buildOptions: { serverOnly: true },
     env: {
       ROOT_URL: 'http://111.222.333.444',
-      MONGO_URL: 'mongodb://mongodb/cgp',
-      MONGO_OPLOG_URL: 'mongodb://mongodb/cgp-local',
+      MONGO_URL: 'mongodb://mongodb/meteor',
+      MONGO_OPLOG_URL: 'mongodb://mongodb/local',
     },
     docker: { image: 'zodern/meteor:latest' },
     enableUploadProgressBar: true
