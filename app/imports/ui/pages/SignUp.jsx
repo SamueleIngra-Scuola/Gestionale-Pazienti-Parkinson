@@ -25,7 +25,7 @@ const SignUp = ({ location }) => {
     const { email, password } = doc;
     Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
-        setError(err.reason);
+        setError(err.message);
       } else {
         setError('');
         setRedirectToRef(true);

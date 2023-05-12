@@ -19,6 +19,8 @@ class MedicsCollection {
       phone: String,
       birthday: Date,
       birthplace: String,
+      patients: Array,
+      'patients.$': String,
     });
     // Attach the schema to the collection, so all attempts to insert a document are checked against schema.
     this.collection.attachSchema(this.schema);
