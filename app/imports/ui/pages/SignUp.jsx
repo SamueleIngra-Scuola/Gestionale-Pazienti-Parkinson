@@ -48,11 +48,14 @@ const SignUp = ({ location }) => {
     }); */
     // birthday = dayjs.utc(birthday).format('DD/MM/YYYY');
     // console.log(birthday);
-    Meteor.call('createUserAccount', email, password, name, surname, phone, birthday, birthplace, role, (err) => {
+    Meteor.call('createUserAccount', email, password, name, surname, phone, birthday, birthplace, role, (err, result) => {
       if (err) {
         setError(err.reason);
       } else {
+        localStorage.setItem('user', JSON.stringify(result));
+        window.location.reload(false);
         setRedirectToRef(true);
+        // eslint-disable-next-line no-param-reassign
       }
     });
   };
@@ -95,7 +98,7 @@ const SignUp = ({ location }) => {
             ''
           ) : (
             <Alert variant="danger">
-              <Alert.Heading>Registration was not successful</Alert.Heading>
+              <Alert.Heading>Errore: </Alert.Heading>
               {error}
             </Alert>
           )}

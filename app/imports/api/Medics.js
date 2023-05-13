@@ -19,7 +19,14 @@ class MedicsCollection {
       phone: String,
       birthday: Date,
       birthplace: String,
-      patients: Array,
+      patients: {
+        type: Array,
+        optional: true,
+      },
+      authToken: {
+        type: String,
+        optional: true,
+      },
       'patients.$': String,
     });
     // Attach the schema to the collection, so all attempts to insert a document are checked against schema.

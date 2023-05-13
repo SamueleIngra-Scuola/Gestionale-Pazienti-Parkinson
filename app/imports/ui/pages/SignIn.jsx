@@ -35,10 +35,14 @@ const SignIn = () => {
     Meteor.call('loginUserAccount', email, password, (err, result) => {
       if (err) {
         setError(err.reason);
-      } else if (result === 'medic') {
+      } else if (result.role === 'medic') {
+        window.location.reload(false);
         setMedicRedirect(true);
-      } else if (result === 'patient') {
+        localStorage.setItem('user', JSON.stringify(result.user));
+      } else if (result.role === 'patient') {
+        window.location.reload(false);
         setPatientRedirect(true);
+        localStorage.setItem('user', JSON.stringify(result.user));
       }
     });
     // console.log('submit2', email, password, error, redirect);
@@ -78,7 +82,7 @@ const SignIn = () => {
             ''
           ) : (
             <Alert variant="danger">
-              <Alert.Heading>Login was not successful</Alert.Heading>
+              <Alert.Heading>Errore: </Alert.Heading>
               {error}
             </Alert>
           )}
