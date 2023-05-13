@@ -12,7 +12,9 @@ import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstra
  */
 const SignIn = () => {
   const [error, setError] = useState('');
-  const [redirect, setRedirect] = useState(false);
+  const [patientRedirect, setPatientRedirect] = useState(false);
+  const [medicRedirect, setMedicRedirect] = useState(false);
+
   const schema = new SimpleSchema({
     email: String,
     password: String,
@@ -23,11 +25,20 @@ const SignIn = () => {
   const submit = (doc) => {
     // console.log('submit', doc, redirect);
     const { email, password } = doc;
-    Meteor.loginWithPassword(email, password, (err) => {
+    /* Meteor.loginWithPassword(email, password, (err) => {
       if (err) {
         setError(err.reason);
       } else {
         setRedirect(true);
+      }
+    }); */
+    Meteor.call('loginUserAccount', email, password, (err, result) => {
+      if (err) {
+        setError(err.reason);
+      } else if (result === 'medic') {
+        setMedicRedirect(true);
+      } else if (result === 'patient') {
+        setPatientRedirect(true);
       }
     });
     // console.log('submit2', email, password, error, redirect);
@@ -36,7 +47,10 @@ const SignIn = () => {
   // Render the signin form.
   // console.log('render', error, redirect);
   // if correct authentication, redirect to page instead of login screen
-  if (redirect) {
+  if (patientRedirect) {
+    return (<Navigate to="/" />);
+  }
+  if (medicRedirect) {
     return (<Navigate to="/" />);
   }
   // Otherwise return the Login form.
