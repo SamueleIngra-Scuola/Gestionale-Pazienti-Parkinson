@@ -51,6 +51,15 @@ Meteor.methods({
     }
     throw new Meteor.Error('invalid-credentials', 'E-Mail o Password sbagliate, Riprova');
   },
+  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
+  'deleteUserAccount': function (body) {
+    const { userId } = body;
+    if (!isNil(Patients.collection.remove({ _id: userId })) || !isNil(Medics.collection.remove({ _id: userId }))) {
+      console.log('Account removed');
+    } else {
+      throw new Meteor.Error('invalid-credentials', 'Non esiste un account con queste credenziali');
+    }
+  },
 });
 
 /* if (Meteor.settings.defaultAccounts) {

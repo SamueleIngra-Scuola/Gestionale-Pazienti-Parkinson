@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { isNil } from 'lodash';
 import { Patients } from '../../api/Patients.js';
 
 /* eslint-disable no-console */
@@ -26,12 +27,18 @@ Meteor.methods({
   // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'assignPatient': function (body) {
     const { patientId, doctorId } = body;
+    const patient = Patients.collection.findOne({ _id: patientId });
+
     try {
-      Patients.collection.update({ _id: patientId }, {
-        $push: {
-          assistedBy: doctorId,
-        },
-      });
+      if (isNil(patient.assistedBy)) {
+        Patients.collection.update({ _id: patientId }, {
+          $push: {
+            assistedBy: doctorId,
+          },
+        });
+      } else {
+        throw new Meteor.Error('patient-already-assigned', 'Questo paziente è già stato preso');
+      }
     } catch (e) {
       throw new Meteor.Error('patient-assign-error', `C'è stato un errore nell'assegnazione del paziente, Errore: ${e}`);
     }
