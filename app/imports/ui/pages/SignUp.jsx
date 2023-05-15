@@ -7,8 +7,6 @@ import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
-import { FileOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Select, Space } from 'antd';
 // import { dayjs } from 'dayjs';
 
 // eslint-disable-next-line no-var
@@ -82,27 +80,10 @@ const SignUp = ({ location }) => {
                 <TextField name="password" placeholder="Password" type="password" />
                 <TextField name="name" placeholder="Nome" />
                 <TextField name="surname" placeholder="Cognome" />
-                <TextField name="phone" placeholder="+39 000 000 0000" />
+                <TextField name="phone" placeholder="+0 000 000 000" />
                 <TextField name="birthday" placeholder="DD/MM/YYYY" />
                 <TextField name="birthplace" placeholder="Comune di Nascita" />
-                <Space wrap style={{marginBottom: 10}}>
-                  <Select
-                    defaultValue="patient"
-                    style={{
-                      width: 120
-                    }}
-                    options={[
-                      {
-                        value: "medic",
-                        label: "Medico"
-                      },
-                      {
-                        value: "patient",
-                        label: "Paziente"
-                      },
-                    ]}
-                  />
-                </Space>
+                <TextField name="role" placeholder="patient o medic" />
                 <ErrorsField />
                 <SubmitField />
               </Card.Body>
