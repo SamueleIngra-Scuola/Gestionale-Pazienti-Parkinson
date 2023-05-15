@@ -8,7 +8,9 @@ import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import { FileOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Select, Space, Button, Form, Input, DatePicker,} from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Select, Space, Button, Form, Input, DatePicker } from 'antd';
+import { Dayjs } from 'dayjs';
+
 // import { dayjs } from 'dayjs';
 
 // eslint-disable-next-line no-var
@@ -20,6 +22,7 @@ import { Breadcrumb, Layout, Menu, theme, Select, Space, Button, Form, Input, Da
  * SignUp component is similar to signin component, but we create a new user instead.
  */
 const SignUp = ({ location }) => {
+
   const [error, setError] = useState('');
   const [redirectToReferer, setRedirectToRef] = useState(false);
 
@@ -33,14 +36,19 @@ const SignUp = ({ location }) => {
     birthplace: String,
     role: String,
   });
-  
   const bridge = new SimpleSchema2Bridge(schema);
 
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
+    // eslint-disable-next-line global-require
+    const utc = require('dayjs/plugin/utc');
+    Dayjs.extend(utc);
+
     // const { email, password } = doc;
-    const { email, password, name, surname, phone, birthday, birthplace, role } = doc;
-    // let { birthday } = doc;
+    console.log(doc);
+    let { birthday } = doc;
+    birthday = Dayjs.utc(birthday, 'DD/MM/YYYY').format(); // 2019-03-06T00:00:00Z
+    console.log(birthday)
     /* Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
         setError(err.reason);
@@ -51,7 +59,7 @@ const SignUp = ({ location }) => {
     }); */
     // birthday = dayjs.utc(birthday).format('DD/MM/YYYY');
     // console.log(birthday);
-    Meteor.call('createUserAccount', email, password, name, surname, phone, birthday, birthplace, role, (err, result) => {
+    Meteor.call('createUserAccount', doc, birthday, (err, result) => {
       if (err) {
         setError(err.reason);
       } else {
@@ -65,129 +73,83 @@ const SignUp = ({ location }) => {
 
   /* Display the signup form. Redirect to add page after successful registration and login. */
   const { from } = location?.state || { from: { pathname: '/add' } };
+  const formItemLayout = {
+    labelCol: {
+      xs: {
+        span: 24,
+      },
+      sm: {
+        span: 8,
+      },
+    },
+    wrapperCol: {
+      xs: {
+        span: 24,
+      },
+      sm: {
+        span: 16,
+      },
+    },
+  };
+  const tailFormItemLayout = {
+    wrapperCol: {
+      xs: {
+        span: 24,
+        offset: 0,
+      },
+      sm: {
+        span: 16,
+        offset: 8,
+      },
+    },
+  };
   // if correct authentication, redirect to from: page instead of signup screen
   if (redirectToReferer) {
     return <Navigate to={from} />;
   }
-}
   const { Option } = Select;
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24
-    },
-    sm: {
-      span: 8
-    }
-  },
-  wrapperCol: {
-    xs: {
-      span: 24
-    },
-    sm: {
-      span: 16
-    }
-  }
-};
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0
-    },
-    sm: {
-      span: 16,
-      offset: 8
-    }
-  }
-};
-  const SignUp = () => {
-    const [form] = Form.useForm();
-    const prefixSelector = (
-      <Form.Item name="prefix" noStyle>
-        <Select
-          style={{
-            width: 70
-          }}
-        >
-          <Option value="39">+39</Option>
-          <Option value="378">+378</Option>
-        </Select>
-      </Form.Item>
-    );
+
+  const [form] = Form.useForm();
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select
+        style={{
+          width: 70,
+        }}
+      >
+        <Option value="39">+39</Option>
+        <Option value="378">+378</Option>
+      </Select>
+    </Form.Item>
+  );
   return (
     <Form
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...formItemLayout}
       form={form}
       name="register"
       initialValues={{
-        prefix: "39"
+        prefix: '39',
       }}
       style={{
-        maxWidth: 600
+        maxWidth: 600,
       }}
+      onFinish={data => submit(data)}
       scrollToFirstError
     >
-      <Form.Item
-        name="name"
-        label="Nome"
-        rules={[
-          {
-            type: "name",
-            message: "Inserire un nome valido!"
-          },
-          {
-            required: true,
-            message: "Inserire un nome valido!"
-          }
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="surname"
-        label="Cognome"
-        rules={[
-          {
-            type: "surname",
-            message: "Inserire un cognome valido!"
-          },
-          {
-            required: true,
-            message: "Inserire un cognome valido!"
-          }
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-      name="date"
-      label="Data di Nascita"
-      rules={[
-        {
-          type: "date",
-          message: "The input is not valid date"
-        },
-        {
-          required: true,
-          message: "Per favore inserisci la tua data di nascita"
-        }
-      ]}
-      >
-          <DatePicker />
-        </Form.Item>
+
       <Form.Item
         name="email"
         label="E-mail"
         rules={[
           {
-            type: "email",
-            message: "The input is not valid E-mail!"
+            type: 'email',
+            message: 'The input is not valid E-mail!',
           },
           {
             required: true,
-            message: "Please input your E-mail!"
-          }
+            message: 'Please input your E-mail!',
+          },
         ]}
       >
         <Input />
@@ -199,8 +161,8 @@ const tailFormItemLayout = {
         rules={[
           {
             required: true,
-            message: "Please input your password!"
-          }
+            message: 'Please input your password!',
+          },
         ]}
         hasFeedback
       >
@@ -210,41 +172,104 @@ const tailFormItemLayout = {
       <Form.Item
         name="confirm"
         label="Confirm Password"
-        dependencies={["password"]}
+        dependencies={['password']}
         hasFeedback
         rules={[
           {
             required: true,
-            message: "Please confirm your password!"
+            message: 'Please confirm your password!',
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
-              if (!value || getFieldValue("password") === value) {
+              if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
               return Promise.reject(
-                new Error("The two passwords that you entered do not match!")
+                new Error('The two passwords that you entered do not match!'),
               );
-            }
-          })
+            },
+          }),
         ]}
       >
         <Input.Password />
       </Form.Item>
+
+      <Form.Item
+        name="name"
+        label="Nome"
+        rules={[
+          {
+            type: 'name',
+            message: 'Inserire un nome valido!',
+          },
+          {
+            required: true,
+            message: 'Inserire un nome valido!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        name="surname"
+        label="Cognome"
+        rules={[
+          {
+            type: 'surname',
+            message: 'Inserire un cognome valido!',
+          },
+          {
+            required: true,
+            message: 'Inserire un cognome valido!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        name="birthday"
+        label="Data di Nascita"
+        rules={[
+          {
+            type: 'birthday',
+            message: 'The input is not valid date',
+          },
+          {
+            required: true,
+            message: 'Per favore inserisci la tua data di nascita',
+          },
+        ]}
+      >
+        <DatePicker format="DD/MM/YYYY" />
+      </Form.Item>
+
+      <Form.Item
+        name="birhplace"
+        label="Comune di Nascita"
+        rules={[
+          {
+            required: true,
+            message: 'Inserisci il comune dove sei nato',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
       <Form.Item
         name="phone"
         label="Phone Number"
         rules={[
           {
             required: true,
-            message: "Please input your phone number!"
-          }
+            message: 'Please input your phone number!',
+          },
         ]}
       >
         <Input
           addonBefore={prefixSelector}
           style={{
-            width: "100%"
+            width: '100%',
           }}
         />
       </Form.Item>
@@ -252,30 +277,42 @@ const tailFormItemLayout = {
       <Form.Item
         name="role"
         label="Tipo Account:"
+        initialValues="patient"
         rules={[
           {
             required: true,
-            message: "Inserire il tipo di account!"
-          }
+            message: 'Inserire il tipo di account!',
+          },
         ]}
       >
-        <Select defaultValue="patient">
-          <Option value="patient">Paziente</Option>
-          <Option value="medic">Medico</Option>
-        </Select>
+        <Select
+          style={{
+            width: 120,
+          }}
+          options={[
+            {
+              value: 'patient',
+              label: 'Paziente',
+            },
+            {
+              value: 'medic',
+              label: 'Medico',
+            },
+          ]}
+        />
       </Form.Item>
+      { /* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
           Registrati
         </Button>
-        <Button type="link" htmlType="submit" style={{marginLeft:5}}>
+        <Button type="link" htmlType="submit" style={{ marginLeft: 5 }}>
           Hai già un account? Accedi qui
         </Button>
       </Form.Item>
     </Form>
   );
 };
-
 /* Ensure that the React Router location object is available in case we need to redirect. */
 SignUp.propTypes = {
   location: PropTypes.shape({

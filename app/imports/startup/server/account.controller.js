@@ -8,15 +8,15 @@ import { Patients } from '../../api/Patients.js';
 
 Meteor.methods({
   // eslint-disable-next-line quote-props, meteor/audit-argument-checks
-  'createUserAccount': function (body) {
-    const { email, password, name, surname, phone, birthday, birthplace, role } = body;
+  'createUserAccount': function (body, birthday) {
+    const { email, password, name, surname, prefix, phone, birthplace, role } = body;
     const token = Random.secret();
     let user = {
       username: email,
       password: password,
       name: name,
       surname: surname,
-      phone: phone,
+      phone: `+${prefix}${phone}`,
       birthday: birthday,
       birthplace: birthplace,
       authToken: token,
