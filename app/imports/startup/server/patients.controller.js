@@ -17,22 +17,21 @@ Meteor.methods({
   },
   'getAssistedPatientsList': function (body) {
     try {
-      const { doctorId } = body;
-      const patientsList = Patients.collection.find({ assistedBy: doctorId }).fetch();
+      const { medicId } = body;
+      const patientsList = Patients.collection.find({ assistedBy: medicId }).fetch();
       return patientsList;
     } catch (e) {
       throw new Meteor.Error('patientslist-retrievalerror', `C'è stato un errore nella richiesta della lista di pazienti, Errore: ${e}`);
     }
   },
   'assistPatient': function (body) {
-    const { patientId, doctorId } = body;
-    const patient = Patients.collection.findOne({ _id: patientId });
-
     try {
+      const { patientId, medicId } = body;
+      const patient = Patients.collection.findOne({ _id: patientId });
       if (isNil(patient.assistedBy)) {
         Patients.collection.update({ _id: patientId }, {
           $push: {
-            assistedBy: doctorId,
+            assistedBy: medicId,
           },
         });
       } else {
@@ -43,14 +42,14 @@ Meteor.methods({
     }
   },
   'unassistPatient': function (body) {
-    const { patientId, doctorId } = body;
+    const { patientId, medicId } = body;
     const patient = Patients.collection.findOne({ _id: patientId });
 
     try {
       if (isNil(patient.assistedBy)) {
         Patients.collection.update({ _id: patientId }, {
           $pull: {
-            assistedBy: doctorId,
+            assistedBy: medicId,
           },
         });
       } else {

@@ -7,24 +7,23 @@ import { Fogs } from '../../api/FoGs.js';
 
 Meteor.methods({
   'createFogEpisode': function (body) {
-    const { patient, distance, frequency, intensity, date } = body;
-    const episode = {
-      patient: patient,
-      distance: distance,
-      frequency: frequency,
-      intensity: intensity,
-      episodedate: date,
-    };
-
     try {
+      const { patient, distance, frequency, intensity, date } = body;
+      const episode = {
+        patient: patient,
+        distance: distance,
+        frequency: frequency,
+        intensity: intensity,
+        episodedate: date,
+      };
       Fogs.collection.insert(episode);
     } catch (e) {
       throw new Meteor.Error('fog-error', `C'è stato un errore nella creazione dell'episodio FoG, Errore: ${e}`);
     }
   },
   'editFogEpisode': function (body) {
-    const { id, distance, frequency, intensity, date } = body;
     try {
+      const { id, distance, frequency, intensity, date } = body;
       Fogs.collection.update({ _id: id }, {
         $push: {
           distance: distance,

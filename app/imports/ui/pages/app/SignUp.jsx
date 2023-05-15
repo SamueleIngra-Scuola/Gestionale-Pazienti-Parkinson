@@ -22,7 +22,7 @@ dayjs.extend(utc);
  */
 const SignUp = ({ location }) => {
 
-  const [error, setError] = useState('');
+  const [, setError] = useState('');
   const [redirectToReferer, setRedirectToRef] = useState(false);
 
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
