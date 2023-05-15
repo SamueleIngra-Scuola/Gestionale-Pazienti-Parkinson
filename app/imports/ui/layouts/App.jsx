@@ -16,6 +16,7 @@ import NotAuthorized from '../pages/NotAuthorized';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Landing from '../pages/Landing';
 import HomeMedic from '../pages/medic/HomeMedic';
+import AssistedPatientsList from '../pages/medic/AssistedPatientsList';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => {
@@ -40,7 +41,8 @@ const App = () => {
           <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />
           <Route path="/notauthorized" element={<NotAuthorized />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/medic" element={<HomeMedic />} />
+          <Route path="/medic/home" element={<HomeMedic />} />
+          <Route path="/medic/assistedpatientslist" element={<AssistedPatientsList />} />
         </Routes>
       </div>
     </Router>
