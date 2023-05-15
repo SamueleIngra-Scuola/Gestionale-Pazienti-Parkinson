@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileOutlined, UserOutlined, FolderOpenOutlined, ToolOutlined, TeamOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
-import { Navigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
@@ -28,54 +28,19 @@ const SideBar = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const onClick = (e) => <Navigate to={e} />;
+  const navigate = useNavigate();
+  const onClick = (e) => navigate(e.key);
   return (
-    <Layout
-      style={{
-        minHeight: '100vh',
-      }}
-    >
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} style={{ background: '#ac0606' }}>
-        <div
-          style={{
-            height: 32,
-            margin: 16,
-            background: '#ff0000',
-          }}
-        />
-        <Menu defaultSelectedKeys={['1']} mode="inline" items={items} style={{ background: '#ac0606', color: '#ffffff' }} onClick={onClick} />
-      </Sider>
-      <Layout className="site-layout">
-        <Header
-          style={{
-            padding: 0,
-            background: '#ac0606',
-          }}
-        />
-        <Content
-          style={{
-            margin: '16px 16px',
-          }}
-        >
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-            }}
-          >
-            PROFILO
-          </div>
-        </Content>
-        <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
-      </Layout>
-    </Layout>
+    <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} style={{ background: '#ac0606' }}>
+      <div
+        style={{
+          height: 32,
+          margin: 16,
+          background: '#ff0000',
+        }}
+      />
+      <Menu defaultSelectedKeys={['1']} mode="inline" items={items} style={{ background: '#ac0606', color: '#ffffff' }} onClick={onClick} />
+    </Sider>
   );
 };
 export default SideBar;

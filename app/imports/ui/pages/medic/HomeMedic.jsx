@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import '../../styles/HomeMedic.css';
-import { FileOutlined, UserOutlined, FolderOpenOutlined, ToolOutlined, TeamOutlined, UsergroupAddOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
-import { Navigate } from 'react-router';
+import { Layout, Menu, theme, Button,
+  Card,
+  Space,
+  Table,
+  Modal,
+  Popconfirm } from 'antd';
 import SideBar from '../../components/SideBar';
 
+const { Content, Footer, Sider } = Layout;
+
 const HomeMedic = () => (
-  <SideBar>
-    <div>
-      Profilo
-    </div>
-  </SideBar>
+  <Layout>
+    <SideBar />
+    <Content>
+      <Card title="Profilo">
+        Tette
+      </Card>
+    </Content>
+  </Layout>
 );
 export default HomeMedic;
