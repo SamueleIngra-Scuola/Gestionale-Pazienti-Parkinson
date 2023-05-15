@@ -9,7 +9,11 @@ import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import { FileOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme, Select, Space, Button, Form, Input, DatePicker } from 'antd';
-import { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+
+const utc = require('dayjs/plugin/utc');
+
+dayjs.extend(utc);
 
 // import { dayjs } from 'dayjs';
 
@@ -37,18 +41,28 @@ const SignUp = ({ location }) => {
     role: String,
   });
   const bridge = new SimpleSchema2Bridge(schema);
-
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
     // eslint-disable-next-line global-require
-    const utc = require('dayjs/plugin/utc');
-    Dayjs.extend(utc);
+    // console.log(dayjs().utc().format('DD/MM/YYYY'));
 
     // const { email, password } = doc;
-    console.log(doc);
+    const { email, password, name, surname, prefix, phone, birthplace, role } = doc;
     let { birthday } = doc;
-    birthday = Dayjs.utc(birthday, 'DD/MM/YYYY').format(); // 2019-03-06T00:00:00Z
-    console.log(birthday)
+    birthday = dayjs.utc(birthday).format('DD/MM/YYYY'); // 2019-03-06T00:00:00Z
+
+    const account = {
+      username: email,
+      password: password,
+      name: name,
+      surname: surname,
+      phone: `+${prefix}${phone}`,
+      birthday: birthday,
+      birthplace: birthplace,
+      role: role,
+    };
+
+    console.log(account);
     /* Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
         setError(err.reason);
@@ -59,7 +73,7 @@ const SignUp = ({ location }) => {
     }); */
     // birthday = dayjs.utc(birthday).format('DD/MM/YYYY');
     // console.log(birthday);
-    Meteor.call('createUserAccount', doc, birthday, (err, result) => {
+    Meteor.call('createUserAccount', account, (err, result) => {
       if (err) {
         setError(err.reason);
       } else {
@@ -130,6 +144,7 @@ const SignUp = ({ location }) => {
       name="register"
       initialValues={{
         prefix: '39',
+        role: 'patient',
       }}
       style={{
         maxWidth: 600,
@@ -244,7 +259,7 @@ const SignUp = ({ location }) => {
       </Form.Item>
 
       <Form.Item
-        name="birhplace"
+        name="birthplace"
         label="Comune di Nascita"
         rules={[
           {
@@ -277,7 +292,6 @@ const SignUp = ({ location }) => {
       <Form.Item
         name="role"
         label="Tipo Account:"
-        initialValues="patient"
         rules={[
           {
             required: true,
