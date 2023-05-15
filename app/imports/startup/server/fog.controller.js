@@ -46,7 +46,7 @@ Meteor.methods({
       throw new Meteor.Error('fog-retrievalerror', `C'è stato un errore nella richiesta dell'episodio FoG, Errore: ${e}`);
     }
   },
-  'getFogEpisodesList': function (body) {
+  'getFogEpisodes': function (body) {
     try {
       const { patient } = body;
       const episodesList = Fogs.collection.find({ patient: patient }).fetch();

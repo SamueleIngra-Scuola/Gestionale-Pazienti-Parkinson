@@ -15,7 +15,7 @@ Meteor.methods({
       throw new Meteor.Error('patientslist-retrievalerror', `C'è stato un errore nella richiesta della lista di pazienti, Errore: ${e}`);
     }
   },
-  'getAssignedPatientsList': function (body) {
+  'getAssistedPatientsList': function (body) {
     try {
       const { doctorId } = body;
       const patientsList = Patients.collection.find({ assistedBy: doctorId }).fetch();
@@ -24,7 +24,7 @@ Meteor.methods({
       throw new Meteor.Error('patientslist-retrievalerror', `C'è stato un errore nella richiesta della lista di pazienti, Errore: ${e}`);
     }
   },
-  'assignPatient': function (body) {
+  'assistPatient': function (body) {
     const { patientId, doctorId } = body;
     const patient = Patients.collection.findOne({ _id: patientId });
 
@@ -42,7 +42,7 @@ Meteor.methods({
       throw new Meteor.Error('patient-assign-error', `C'è stato un errore nell'assegnazione del paziente, Errore: ${e}`);
     }
   },
-  'unassignPatient': function (body) {
+  'unassistPatient': function (body) {
     const { patientId, doctorId } = body;
     const patient = Patients.collection.findOne({ _id: patientId });
 

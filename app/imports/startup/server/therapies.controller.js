@@ -44,7 +44,7 @@ Meteor.methods({
       throw new Meteor.Error('therapy-retrievalerror', `C'è stato un errore nella richiesta della terapia, Errore: ${e}`);
     }
   },
-  'getTherapiesList': function (body) {
+  'getTherapiesHistory': function (body) {
     try {
       const { patient } = body;
       const therapiesList = Therapies.collection.find({ patient: patient }).fetch();
