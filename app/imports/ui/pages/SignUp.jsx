@@ -36,7 +36,6 @@ const SignUp = ({ location }) => {
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
     // const { email, password } = doc;
-    const { email, password, name, surname, phone, birthday, birthplace, role } = doc;
     // let { birthday } = doc;
     /* Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
@@ -48,7 +47,7 @@ const SignUp = ({ location }) => {
     }); */
     // birthday = dayjs.utc(birthday).format('DD/MM/YYYY');
     // console.log(birthday);
-    Meteor.call('createUserAccount', email, password, name, surname, phone, birthday, birthplace, role, (err, result) => {
+    Meteor.call('createUserAccount', doc, (err, result) => {
       if (err) {
         setError(err.reason);
       } else {

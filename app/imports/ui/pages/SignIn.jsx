@@ -24,7 +24,6 @@ const SignIn = () => {
   // Handle Signin submission using Meteor's account mechanism.
   const submit = (doc) => {
     // console.log('submit', doc, redirect);
-    const { email, password } = doc;
     /* Meteor.loginWithPassword(email, password, (err) => {
       if (err) {
         setError(err.reason);
@@ -32,7 +31,7 @@ const SignIn = () => {
         setRedirect(true);
       }
     }); */
-    Meteor.call('loginUserAccount', email, password, (err, result) => {
+    Meteor.call('loginUserAccount', doc, (err, result) => {
       if (err) {
         setError(err.reason);
       } else if (result.role === 'medic') {

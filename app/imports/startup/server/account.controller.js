@@ -8,7 +8,8 @@ import { Patients } from '../../api/Patients.js';
 
 Meteor.methods({
   // eslint-disable-next-line quote-props, meteor/audit-argument-checks
-  'createUserAccount': function (email, password, name, surname, phone, birthday, birthplace, role) {
+  'createUserAccount': function (body) {
+    const { email, password, name, surname, phone, birthday, birthplace, role } = body;
     const token = Random.secret();
     let user = {
       username: email,
@@ -18,12 +19,15 @@ Meteor.methods({
       phone: phone,
       birthday: birthday,
       birthplace: birthplace,
+      authToken: token,
     };
     if (isNil(Patients.collection.findOne({ username: email }) && isNil(Medics.collection.findOne({ username: email })))) {
       if (role === 'medic') {
         Medics.collection.insert(user);
+        user = Medics.collection.findOne({ username: email });
       } else if (role === 'patient') {
         Patients.collection.insert(user);
+        user = Patients.collection.findOne({ username: email });
       } else {
         throw new Meteor.Error('invalid-role', 'Questo ruolo non esiste');
       }
@@ -31,27 +35,12 @@ Meteor.methods({
       throw new Meteor.Error('existing-email', 'Un account con questa E-Mail esiste già, inseriscine una diversa');
     }
 
-    if (role === 'medic') {
-      Medics.collection.update({ username: email }, {
-        $set: {
-          authToken: token,
-        },
-      });
-      user = Medics.collection.findOne({ username: email });
-    }
-    if (role === 'patient') {
-      Patients.collection.update({ username: email }, {
-        $set: {
-          authToken: token,
-        },
-      });
-      user = Patients.collection.findOne({ username: email });
-    }
     console.log(user);
     return user;
   },
   // eslint-disable-next-line quote-props, meteor/audit-argument-checks
-  'loginUserAccount': function (email, password) {
+  'loginUserAccount': function (body) {
+    const { email, password } = body;
     let user = Patients.collection.findOne({ username: email, password: password });
     if (!isNil(user)) {
       return { user: user, role: 'patient' };
