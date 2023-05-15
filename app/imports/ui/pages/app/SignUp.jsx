@@ -1,14 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 // import { Accounts } from 'meteor/accounts-base';
-import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
-import SimpleSchema from 'simpl-schema';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
-import { FileOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Select, Space, Button, Form, Input, DatePicker } from 'antd';
+import { Select, Button, Form, Input, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 
 const utc = require('dayjs/plugin/utc');
@@ -30,17 +25,6 @@ const SignUp = ({ location }) => {
   const [error, setError] = useState('');
   const [redirectToReferer, setRedirectToRef] = useState(false);
 
-  const schema = new SimpleSchema({
-    email: String,
-    password: String,
-    name: String,
-    surname: String,
-    phone: String,
-    birthday: Date,
-    birthplace: String,
-    role: String,
-  });
-  const bridge = new SimpleSchema2Bridge(schema);
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
     // eslint-disable-next-line global-require
