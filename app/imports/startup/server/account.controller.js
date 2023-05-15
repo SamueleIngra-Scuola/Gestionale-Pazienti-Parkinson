@@ -8,26 +8,26 @@ import { Patients } from '../../api/Patients.js';
 
 Meteor.methods({
   // eslint-disable-next-line quote-props, meteor/audit-argument-checks
-  'createUserAccount': function (body, birthday) {
-    const { email, password, name, surname, prefix, phone, birthplace, role } = body;
+  'createUserAccount': function (body) {
+    const { username, password, name, surname, birthday, phone, birthplace, role } = body;
     const token = Random.secret();
     let user = {
-      username: email,
+      username: username,
       password: password,
       name: name,
       surname: surname,
-      phone: `+${prefix}${phone}`,
+      phone: phone,
       birthday: birthday,
       birthplace: birthplace,
       authToken: token,
     };
-    if (isNil(Patients.collection.findOne({ username: email }) && isNil(Medics.collection.findOne({ username: email })))) {
+    if (isNil(Patients.collection.findOne({ username: username }) && isNil(Medics.collection.findOne({ username: username })))) {
       if (role === 'medic') {
         Medics.collection.insert(user);
-        user = Medics.collection.findOne({ username: email });
+        user = Medics.collection.findOne({ username: username });
       } else if (role === 'patient') {
         Patients.collection.insert(user);
-        user = Patients.collection.findOne({ username: email });
+        user = Patients.collection.findOne({ username: username });
       } else {
         throw new Meteor.Error('invalid-role', 'Questo ruolo non esiste');
       }
