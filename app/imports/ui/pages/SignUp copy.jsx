@@ -85,19 +85,20 @@ const SignUp = ({ location }) => {
                 <TextField name="phone" placeholder="+39 000 000 0000" />
                 <TextField name="birthday" placeholder="DD/MM/YYYY" />
                 <TextField name="birthplace" placeholder="Comune di Nascita" />
-                <Space wrap style={{marginBottom: 10}}>
+                <Space wrap>
                   <Select
-                    defaultValue="patient"
+                    defaultValue="lucy"
                     style={{
                       width: 120
                     }}
+                    onChange={handleChange}
                     options={[
                       {
-                        value: "medic",
+                        value: "med",
                         label: "Medico"
                       },
                       {
-                        value: "patient",
+                        value: "paz",
                         label: "Paziente"
                       },
                     ]}
