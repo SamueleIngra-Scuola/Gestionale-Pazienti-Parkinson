@@ -38,12 +38,12 @@ const Therapy = () => {
               background: colorBgContainer,
             }}
           >
-            <Card title="Pazienti Seguiti">
+            <Card title="Terapie Assegnate">
               <Table
                 columns={[
                   {
-                    title: 'Nome e cognome',
-                    dataIndex: 'name',
+                    title: 'Terapie',
+                    dataIndex: 'therapy',
                   },
                   {
                     align: 'right',
@@ -61,17 +61,6 @@ const Therapy = () => {
                             <Button key="back" onClick={handleCancel}>
                               Indietro
                             </Button>,
-                            <Button key="submit" type="primary">
-                              Storico FoG
-                            </Button>,
-                            <Button key="submit" type="primary">
-                              Storico Terapie
-                            </Button>,
-                            <Button key="back" style={{ color: 'white', background: 'red' }}>
-                              <Popconfirm title="Sicuro di voler cancellare?" onConfirm={handleCancel}>
-                                Abbandona
-                              </Popconfirm>
-                            </Button>,
                           ]}
                         >
                           <p>DETTAGLI PAZIENTE</p>
@@ -83,15 +72,15 @@ const Therapy = () => {
                 dataSource={[
                   {
                     key: '1',
-                    name: 'John Brown',
+                    therapy: 'Dance',
                   },
                   {
                     key: '2',
-                    name: 'Jim Green',
+                    therapy: 'Jim Green',
                   },
                   {
                     key: '3',
-                    name: 'Joe Black',
+                    therapy: 'Joe Black',
                   },
                 ]}
               />
