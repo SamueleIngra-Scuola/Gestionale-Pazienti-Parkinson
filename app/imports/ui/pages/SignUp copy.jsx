@@ -38,6 +38,7 @@ const SignUp = ({ location }) => {
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
     // const { email, password } = doc;
+    const { email, password, name, surname, phone, birthday, birthplace, role } = doc;
     // let { birthday } = doc;
     /* Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
@@ -49,7 +50,7 @@ const SignUp = ({ location }) => {
     }); */
     // birthday = dayjs.utc(birthday).format('DD/MM/YYYY');
     // console.log(birthday);
-    Meteor.call('createUserAccount', doc, (err, result) => {
+    Meteor.call('createUserAccount', email, password, name, surname, phone, birthday, birthplace, role, (err, result) => {
       if (err) {
         setError(err.reason);
       } else {
@@ -84,19 +85,20 @@ const SignUp = ({ location }) => {
                 <TextField name="phone" placeholder="+39 000 000 0000" />
                 <TextField name="birthday" placeholder="DD/MM/YYYY" />
                 <TextField name="birthplace" placeholder="Comune di Nascita" />
-                <Space wrap style={{marginBottom: 10}}>
+                <Space wrap>
                   <Select
-                    defaultValue="patient"
+                    defaultValue="lucy"
                     style={{
                       width: 120
                     }}
+                    onChange={handleChange}
                     options={[
                       {
-                        value: "medic",
+                        value: "med",
                         label: "Medico"
                       },
                       {
-                        value: "patient",
+                        value: "paz",
                         label: "Paziente"
                       },
                     ]}
