@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Medics } from '../../api/Medics.js';
 
 /* eslint-disable no-console */
+/* eslint-disable quote-props */
+/* eslint-disable meteor/audit-argument-checks */
 
 Meteor.methods({
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'getMedicsList': function () {
     try {
       const medicsList = Medics.collection.find({}).fetch();

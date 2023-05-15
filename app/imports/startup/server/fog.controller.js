@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Fogs } from '../../api/FoGs.js';
 
 /* eslint-disable no-console */
+/* eslint-disable quote-props */
+/* eslint-disable meteor/audit-argument-checks */
 
 Meteor.methods({
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'createFogEpisode': function (body) {
     const { patient, distance, frequency, intensity, date } = body;
     const episode = {
@@ -21,7 +22,6 @@ Meteor.methods({
       throw new Meteor.Error('fog-error', `C'è stato un errore nella creazione dell'episodio FoG, Errore: ${e}`);
     }
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'editFogEpisode': function (body) {
     const { id, distance, frequency, intensity, date } = body;
     try {
@@ -37,7 +37,6 @@ Meteor.methods({
       throw new Meteor.Error('fog-error', `C'è stato un errore nella creazione dell'episodio FoG, Errore: ${e}`);
     }
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'getFogEpisode': function (body) {
     try {
       const { id } = body;
@@ -47,7 +46,6 @@ Meteor.methods({
       throw new Meteor.Error('fog-retrievalerror', `C'è stato un errore nella richiesta dell'episodio FoG, Errore: ${e}`);
     }
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'getFogEpisodesList': function (body) {
     try {
       const { patient } = body;

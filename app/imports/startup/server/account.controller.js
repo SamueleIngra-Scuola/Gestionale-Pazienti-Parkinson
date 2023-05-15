@@ -5,9 +5,10 @@ import { Medics } from '../../api/Medics.js';
 import { Patients } from '../../api/Patients.js';
 
 /* eslint-disable no-console */
+/* eslint-disable quote-props */
+/* eslint-disable meteor/audit-argument-checks */
 
 Meteor.methods({
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'createUserAccount': function (body) {
     const { username, password, name, surname, birthday, phone, birthplace, role } = body;
     const token = Random.secret();
@@ -38,7 +39,6 @@ Meteor.methods({
     console.log(user);
     return user;
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'loginUserAccount': function (body) {
     const { email, password } = body;
     let user = Patients.collection.findOne({ username: email, password: password });
@@ -51,7 +51,6 @@ Meteor.methods({
     }
     throw new Meteor.Error('invalid-credentials', 'E-Mail o Password sbagliate, Riprova');
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'deleteUserAccount': function (body) {
     const { userId } = body;
     if (!isNil(Patients.collection.remove({ _id: userId })) || !isNil(Medics.collection.remove({ _id: userId }))) {

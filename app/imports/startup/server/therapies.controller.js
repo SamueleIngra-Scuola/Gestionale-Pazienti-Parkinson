@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Therapies } from '../../api/Therapies.js';
 
 /* eslint-disable no-console */
+/* eslint-disable quote-props */
+/* eslint-disable meteor/audit-argument-checks */
 
 Meteor.methods({
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'createTherapy': function (body) {
     const { patient, drug, dosage, prescriptiondate } = body;
     const therapy = {
@@ -20,7 +21,6 @@ Meteor.methods({
       throw new Meteor.Error('therapy-create-error', `C'è stato un errore nella creazione della terapia, Errore: ${e}`);
     }
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'editTherapy': function (body) {
     const { id, drug, dosage } = body;
 
@@ -35,7 +35,6 @@ Meteor.methods({
       throw new Meteor.Error('therapy-edit-error', `C'è stato un errore nella modifica della terapia, Errore: ${e}`);
     }
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'getTherapy': function (body) {
     try {
       const { id } = body;
@@ -45,7 +44,6 @@ Meteor.methods({
       throw new Meteor.Error('therapy-retrievalerror', `C'è stato un errore nella richiesta della terapia, Errore: ${e}`);
     }
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'getTherapiesList': function (body) {
     try {
       const { patient } = body;
