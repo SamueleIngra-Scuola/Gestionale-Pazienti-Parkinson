@@ -17,6 +17,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Landing from '../pages/Landing';
 import HomeMedic from '../pages/medic/HomeMedic';
 import AssistedPatientsList from '../pages/medic/AssistedPatientsList';
+import Therapy from '../pages/app/patient/Terapy';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
           <Route path="/medic/home" element={<HomeMedic />} />
           <Route path="/medic/assistedpatientslist" element={<AssistedPatientsList />} />
+          <Route path="/patient/therapy" element={<Therapy />} />
         </Routes>
       </div>
     </Router>
