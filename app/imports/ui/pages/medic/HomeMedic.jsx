@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import '../../styles/HomeMedic.css';
-import { FileOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
+import { FileOutlined, UserOutlined, FolderOpenOutlined, ToolOutlined, TeamOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -14,15 +14,14 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <UserOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
+  getItem('Profilo', '2', <UserOutlined />),
+  getItem('Medico', 'sub1', <FolderOpenOutlined />, [
+    getItem('Pazienti Seguiti', '3', <TeamOutlined />),
+    getItem('Elenco Pazienti', '4', <UsergroupAddOutlined />),
   ]),
-  getItem('Team', 'sub2', <UserOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
+  getItem('Admin', 'sub2', <ToolOutlined />, [
+    getItem('Elenco Medici', '5', <FileOutlined />),
+  ]),
 ];
 const HomeMedic = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -35,21 +34,21 @@ const HomeMedic = () => {
         minHeight: '100vh',
       }}
     >
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} style={{background: 'red'}}>
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} style={{background: '#ac0606'}}>
         <div
           style={{
             height: 32,
             margin: 16,
-            background: 'rgba(255, 255, 255, 0.2)',
+            background: '#ff0000',
           }}
         />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} style={{background:'red',}}/>
+        <Menu defaultSelectedKeys={['1']} mode="inline" items={items} style={{background: '#ac0606', color: '#ffffff',}}/>
       </Sider>
       <Layout className="site-layout">
         <Header
           style={{
             padding: 0,
-            background: colorBgContainer,
+            background: '#ac0606',
           }}
         />
         <Content
