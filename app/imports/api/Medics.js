@@ -19,11 +19,6 @@ class MedicsCollection {
       phone: String,
       birthday: Date,
       birthplace: String,
-      patients: {
-        type: Array,
-        optional: true,
-      },
-      'patients.$': String,
       authToken: {
         type: String,
         optional: true,

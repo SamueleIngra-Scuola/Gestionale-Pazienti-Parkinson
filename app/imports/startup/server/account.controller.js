@@ -5,51 +5,71 @@ import { Medics } from '../../api/Medics.js';
 import { Patients } from '../../api/Patients.js';
 
 /* eslint-disable no-console */
+/* eslint-disable quote-props */
+/* eslint-disable meteor/audit-argument-checks */
 
 Meteor.methods({
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'createUserAccount': function (body) {
-    const { username, password, name, surname, birthday, phone, birthplace, role } = body;
-    const token = Random.secret();
-    let user = {
-      username: username,
-      password: password,
-      name: name,
-      surname: surname,
-      phone: phone,
-      birthday: birthday,
-      birthplace: birthplace,
-      authToken: token,
-    };
-    if (isNil(Patients.collection.findOne({ username: username }) && isNil(Medics.collection.findOne({ username: username })))) {
-      if (role === 'medic') {
-        Medics.collection.insert(user);
-        user = Medics.collection.findOne({ username: username });
-      } else if (role === 'patient') {
-        Patients.collection.insert(user);
-        user = Patients.collection.findOne({ username: username });
+    try {
+      const { username, password, name, surname, birthday, phone, birthplace, role } = body;
+      const token = Random.secret();
+      let user = {
+        username: username,
+        password: password,
+        name: name,
+        surname: surname,
+        phone: phone,
+        birthday: birthday,
+        birthplace: birthplace,
+        authToken: token,
+      };
+      if (isNil(Patients.collection.findOne({ username: username }) && isNil(Medics.collection.findOne({ username: username })))) {
+        if (role === 'medic') {
+          Medics.collection.insert(user);
+          user = Medics.collection.findOne({ username: username });
+        } else if (role === 'patient') {
+          Patients.collection.insert(user);
+          user = Patients.collection.findOne({ username: username });
+        } else {
+          throw new Meteor.Error('invalid-role', 'Questo ruolo non esiste');
+        }
       } else {
-        throw new Meteor.Error('invalid-role', 'Questo ruolo non esiste');
+        throw new Meteor.Error('existing-email', 'Un account con questa E-Mail esiste già, inseriscine una diversa');
       }
-    } else {
-      throw new Meteor.Error('existing-email', 'Un account con questa E-Mail esiste già, inseriscine una diversa');
+      console.log(user);
+      return user;
+    } catch (e) {
+      throw new Meteor.Error('account-creation-error', `C'è stato un errore nella creazione dell'account, Errore: ${e}`);
     }
 
-    console.log(user);
-    return user;
   },
-  // eslint-disable-next-line quote-props, meteor/audit-argument-checks
   'loginUserAccount': function (body) {
-    const { email, password } = body;
-    let user = Patients.collection.findOne({ username: email, password: password });
-    if (!isNil(user)) {
-      return { user: user, role: 'patient' };
+    try {
+      const { email, password } = body;
+      let user = Patients.collection.findOne({ username: email, password: password });
+      if (!isNil(user)) {
+        return { user: user, role: 'patient' };
+      }
+      user = Medics.collection.findOne({ username: email, password: password });
+      if (!isNil(user)) {
+        return { user: user, role: 'medic' };
+      }
+      throw new Meteor.Error('invalid-credentials', 'E-Mail o Password sbagliate, Riprova');
+    } catch (e) {
+      throw new Meteor.Error('account-login-error', `C'è stato un errore nel login all'account, Errore: ${e}`);
     }
-    user = Medics.collection.findOne({ username: email, password: password });
-    if (!isNil(user)) {
-      return { user: user, role: 'medic' };
+  },
+  'deleteUserAccount': function (body) {
+    try {
+      const { userId } = body;
+      if (!isNil(Patients.collection.remove({ _id: userId })) || !isNil(Medics.collection.remove({ _id: userId }))) {
+        console.log('Account removed');
+      } else {
+        throw new Meteor.Error('invalid-credentials', 'Non esiste un account con queste credenziali');
+      }
+    } catch (e) {
+      throw new Meteor.Error('account-deletion-error', `C'è stato un errore nella creazione dell'account, Errore: ${e}`);
     }
-    throw new Meteor.Error('invalid-credentials', 'E-Mail o Password sbagliate, Riprova');
   },
 });
 
