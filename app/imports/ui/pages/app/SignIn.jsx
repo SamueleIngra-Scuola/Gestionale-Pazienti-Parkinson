@@ -34,13 +34,19 @@ const SignIn = () => {
       if (err) {
         setError(err.reason);
       } else if (result.role === 'medic') {
-        window.location.reload(false);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        localStorage.setItem('role', result.role);
+        localStorage.getItem('user');
+        localStorage.getItem('role');
         setMedicRedirect(true);
-        localStorage.setItem('user', JSON.stringify(result.user));
-      } else if (result.role === 'patient') {
         window.location.reload(false);
-        setPatientRedirect(true);
+      } else if (result.role === 'patient') {
         localStorage.setItem('user', JSON.stringify(result.user));
+        localStorage.setItem('role', result.role);
+        localStorage.getItem('user');
+        localStorage.getItem('role');
+        setPatientRedirect(true);
+        window.location.reload(false);
       }
     });
     // console.log('submit2', email, password, error, redirect);
@@ -51,9 +57,6 @@ const SignIn = () => {
   if (medicRedirect) {
     return (<Navigate to="/" />);
   }
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-  };
   return (
     <Form
       name="normal_login"
@@ -61,7 +64,7 @@ const SignIn = () => {
       initialValues={{
         remember: true,
       }}
-      onFinish={onFinish}
+      onFinish={submit}
     >
       <Form.Item
         name="username"
