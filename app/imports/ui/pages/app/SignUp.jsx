@@ -61,7 +61,10 @@ const SignUp = ({ location }) => {
       if (err) {
         setError(err.reason);
       } else {
-        localStorage.setItem('user', JSON.stringify(result));
+        localStorage.setItem('user', JSON.stringify(result.user));
+        localStorage.setItem('role', JSON.stringify(result.role));
+        localStorage.getItem('user');
+        localStorage.getItem('role');
         window.location.reload(false);
         setRedirectToRef(true);
         // eslint-disable-next-line no-param-reassign
