@@ -8,15 +8,6 @@ import { Patients } from '../../api/Patients.js';
 /* eslint-disable quote-props */
 /* eslint-disable meteor/audit-argument-checks */
 
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-
 Meteor.methods({
   'createUserAccount': function (body) {
     try {
@@ -75,48 +66,6 @@ Meteor.methods({
         console.log('Account removed');
       } else {
         throw new Meteor.Error('invalid-credentials', 'Non esiste un account con queste credenziali');
-      }
-    } catch (e) {
-      throw new Meteor.Error('account-deletion-error', `C'è stato un errore nella creazione dell'account, Errore: ${e}`);
-    }
-  },
-  'getAccountSidebarElements': function (role) {
-    try {
-      let items;
-      switch (role) {
-      case 'medic':
-      {
-        console.log('test');
-        items = [
-          getItem('Profilo', '/medic/home', <UserOutlined />),
-          getItem('Medico', 'sub1', <FolderOpenOutlined />, [
-            getItem('Pazienti Seguiti', '/medic/assistedpatientslist', <TeamOutlined />),
-            getItem('Elenco Pazienti', '/medic/patientslist', <UsergroupAddOutlined />),
-          ]),
-          getItem('Admin', 'sub2', <ToolOutlined />, [
-            getItem('Elenco Medici', '/medic/admin/mediclist', <FileOutlined />),
-            getItem('Elenco Pazienti', '/medic/admin/patientlist', <FileOutlined />),
-          ]),
-        ];
-        return items;
-      }
-      case 'patient':
-      {
-        console.log(role);
-        items = [
-          getItem('Profilo', '/medic/home', <UserOutlined />),
-          getItem('Medico', 'sub1', <FolderOpenOutlined />, [
-            getItem('Pazienti Seguiti', '/medic/assistedpatientslist', <TeamOutlined />),
-            getItem('Elenco Pazienti', '/medic/patientslist', <UsergroupAddOutlined />),
-          ]),
-        ];
-        return items;
-      }
-      default:
-      {
-        console.log('no role');
-        return false;
-      }
       }
     } catch (e) {
       throw new Meteor.Error('account-deletion-error', `C'è stato un errore nella creazione dell'account, Errore: ${e}`);

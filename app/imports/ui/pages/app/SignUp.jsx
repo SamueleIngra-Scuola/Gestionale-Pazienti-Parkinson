@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 // import { Accounts } from 'meteor/accounts-base';
 import { Select, Button, Form, Input, DatePicker } from 'antd';
+import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
 import dayjs from 'dayjs';
 
 const utc = require('dayjs/plugin/utc');
@@ -22,8 +23,8 @@ dayjs.extend(utc);
  */
 const SignUp = ({ location }) => {
 
-  const [, setError] = useState('');
-  const [redirectToReferer, setRedirectToRef] = useState(false);
+  const [error, setError] = useState('');
+  const [redirectToHome, setRedirect] = useState(false);
 
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
@@ -33,7 +34,7 @@ const SignUp = ({ location }) => {
     // const { email, password } = doc;
     const { email, password, name, surname, prefix, phone, birthplace, role } = doc;
     let { birthday } = doc;
-    birthday = dayjs.utc(birthday).format('DD/MM/YYYY'); // 2019-03-06T00:00:00Z
+    birthday = dayjs.utc(birthday).format(); // 2019-03-06T00:00:00Z
 
     const account = {
       username: email,
@@ -46,7 +47,7 @@ const SignUp = ({ location }) => {
       role: role,
     };
 
-    console.log(account);
+    console.log(dayjs.utc().format());
     /* Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
         setError(err.reason);
@@ -61,12 +62,11 @@ const SignUp = ({ location }) => {
       if (err) {
         setError(err.reason);
       } else {
+        console.log('done');
         localStorage.setItem('user', JSON.stringify(result.user));
         localStorage.setItem('role', JSON.stringify(result.role));
-        localStorage.getItem('user');
-        localStorage.getItem('role');
-        window.location.reload(false);
-        setRedirectToRef(true);
+        setRedirect(true);
+        // window.location.reload(false);
         // eslint-disable-next-line no-param-reassign
       }
     });
@@ -105,8 +105,8 @@ const SignUp = ({ location }) => {
     },
   };
   // if correct authentication, redirect to from: page instead of signup screen
-  if (redirectToReferer) {
-    return <Navigate to={from} />;
+  if (redirectToHome) {
+    return <Navigate to={`/${localStorage.getItem('role')}/home`} />;
   }
   const { Option } = Select;
 
@@ -311,7 +311,16 @@ const SignUp = ({ location }) => {
           Hai già un account? Accedi qui
         </Button>
       </Form.Item>
+      {error === '' ? (
+        ''
+      ) : (
+        <Alert variant="danger">
+          <Alert.Heading>Errore: </Alert.Heading>
+          {error}
+        </Alert>
+      )}
     </Form>
+
   );
 };
 /* Ensure that the React Router location object is available in case we need to redirect. */

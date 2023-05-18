@@ -44,9 +44,7 @@ const App = () => {
           <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
           <Route path="/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
           <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
-          <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />
-          <Route path="/notauthorized" element={<NotAuthorized />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />  
           <Route path="/medic/home" element={<HomeMedic />} />
           <Route path="/medic/assistedpatientslist" element={<AssistedPatientsList />} />
           <Route path="/medic/patientslist" element={<PatientsList />} />
@@ -55,6 +53,8 @@ const App = () => {
           <Route path="/patient/home" element={<HomePatient />} />
           <Route path="/patient/fogepisodeslist" element={<FogEpisodesList />} />
           <Route path="/patient/therapieslist" element={<TherapiesList />} />
+          <Route path="/notauthorized" element={<NotAuthorized />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>

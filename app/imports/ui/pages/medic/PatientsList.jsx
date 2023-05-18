@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import SideBar from '../../components/SideBar';
+import { Meteor } from 'meteor/meteor';
+import React, { useState, useEffect } from 'react';
 import '../../styles/HomeMedic.css';
 import { FileOutlined, UserOutlined, FolderOpenOutlined, ToolOutlined, TeamOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, Button,
@@ -8,99 +8,94 @@ import { Layout, Menu, theme, Button,
   Table,
   Modal,
   Popconfirm } from 'antd';
+import SideBar from '../../components/SideBar';
+
+const dayjs = require('dayjs');
 
 const { Content, Footer, Sider } = Layout;
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-const items = [
-  getItem('Profilo', '/medic/home', <UserOutlined />),
-  getItem('Medico', 'sub1', <FolderOpenOutlined />, [
-    getItem('Pazienti Seguiti', '/medic/assistedpatientslist', <TeamOutlined />),
-    getItem('Elenco Pazienti', '/medic/patientslist', <UsergroupAddOutlined />),
-  ]),
-  getItem('Admin', 'sub2', <ToolOutlined />, [
-    getItem('Elenco Medici', '/medic/admin/mediclist', <FileOutlined />),
-    getItem('Elenco Pazienti', '/medic/admin/patientlist', <FileOutlined />),
-  ]),
-];
+
 const PatientsList = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+
+  const [patientsList, setPatientsList] = useState([]);
   const [open, setOpen] = useState(false);
-  const showModal = () => {
+  const [modalTask, setModalTaskId] = useState('');
+  const showModal = (record) => {
+    setModalTaskId(record);
     setOpen(true);
   };
   const handleCancel = () => {
     setOpen(false);
   };
+  const getPatientsList = () => {
+    Meteor.call('getPatientsList', (_, result) => {
+      setPatientsList(result); // Store the fetched data in the state variable
+    });
+  };
+
+  useEffect(() => {
+    getPatientsList(); // Fetch the patient list when the component mounts
+  }, []);
+
+  const assistPatient = (medicId, patientId) => {
+    Meteor.call('assistPatient', { medicId: medicId, patientId: patientId }, (_, result) => result);
+    setOpen(false);
+    getPatientsList();
+  };
+
   return (
     <Layout>
       <SideBar />
       <Content>
-        <Card title="Pazienti Seguiti">
+        <Card title="Lista Pazienti">
           <Table
             columns={[
               {
-                title: 'Nome e cognome',
+                title: 'E-Mail',
+                dataIndex: 'username',
+              },
+              {
+                title: 'Nome',
                 dataIndex: 'name',
               },
               {
+                title: 'Cognome',
+                dataIndex: 'surname',
+              },
+              {
                 align: 'right',
-                render: () => (
+                render: (_, patient) => (
                   <Space size="middle">
-                    <Button type="primary" onClick={showModal}>
+                    <Button type="primary" onClick={() => showModal(patient)}>
                       Dettagli
                     </Button>
                     <Modal
-                      className="Modale"
+                      className="Modal"
                       open={open}
-                      title="NOME PAZIENTE"
+                      title={`${modalTask.name} ${modalTask.surname}`}
                       onCancel={handleCancel}
                       footer={[
-                        <Button key="back" onClick={handleCancel}>
+                        <Button type="text" key="back" onClick={handleCancel}>
                           Indietro
                         </Button>,
-                        <Button key="submit" type="primary">
-                          Storico FoG
-                        </Button>,
-                        <Button key="submit" type="primary">
-                          Storico Terapie
-                        </Button>,
-                        <Button key="back" style={{ color: 'white', background: 'red' }}>
-                          <Popconfirm title="Sicuro di voler cancellare?" onConfirm={handleCancel}>
-                            Abbandona
+                        <Button key="assist" type="primary">
+                          <Popconfirm title="Sei sicuro di voler assistere questo paziente?" onConfirm={() => assistPatient(JSON.parse(localStorage.getItem('user'))._id, modalTask._id)}>
+                            Assisti
                           </Popconfirm>
                         </Button>,
                       ]}
                     >
-                      <p>DETTAGLI PAZIENTE</p>
+                      <p>E-Mail: {modalTask.username}</p>
+                      <p>Nome: {modalTask.name} {modalTask.surname}</p>
+                      { /* <p>Data di Nascita: {dayjs(modalTask.birthday, 'DD/MM/YYYY')}</p> */}
+                      <p>Comune di Nascita: {modalTask.birthplace}</p>
+                      <p>Numero di Telefono: {modalTask.phone}</p>
+
                     </Modal>
                   </Space>
                 ),
               },
             ]}
-            dataSource={[
-              {
-                key: '1',
-                name: 'John Brown',
-              },
-              {
-                key: '2',
-                name: 'Jim Green',
-              },
-              {
-                key: '3',
-                name: 'Joe Black',
-              },
-            ]}
+            dataSource={patientsList}
           />
         </Card>
       </Content>

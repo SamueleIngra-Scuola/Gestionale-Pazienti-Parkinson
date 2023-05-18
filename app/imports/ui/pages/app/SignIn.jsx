@@ -14,8 +14,7 @@ import '../../styles/SignIn.css';
  */
 const SignIn = () => {
   const [error, setError] = useState('');
-  const [patientRedirect, setPatientRedirect] = useState(false);
-  const [medicRedirect, setMedicRedirect] = useState(false);
+  const [redirectToHome, setRedirect] = useState(false);
   const schema = new SimpleSchema({
     email: String,
     password: String,
@@ -33,29 +32,17 @@ const SignIn = () => {
     Meteor.call('loginUserAccount', doc, (err, result) => {
       if (err) {
         setError(err.reason);
-      } else if (result.role === 'medic') {
+      } else {
         localStorage.setItem('user', JSON.stringify(result.user));
         localStorage.setItem('role', result.role);
-        localStorage.getItem('user');
-        localStorage.getItem('role');
-        setMedicRedirect(true);
-        window.location.reload(false);
-      } else if (result.role === 'patient') {
-        localStorage.setItem('user', JSON.stringify(result.user));
-        localStorage.setItem('role', result.role);
-        localStorage.getItem('user');
-        localStorage.getItem('role');
-        setPatientRedirect(true);
-        window.location.reload(false);
+        setRedirect(true);
+        // window.location.reload(false);
       }
     });
     // console.log('submit2', email, password, error, redirect);
   };
-  if (patientRedirect) {
-    return (<Navigate to="/" />);
-  }
-  if (medicRedirect) {
-    return (<Navigate to="/" />);
+  if (redirectToHome) {
+    return <Navigate to={`/${localStorage.getItem('role')}/home`} />;
   }
   return (
     <Form
