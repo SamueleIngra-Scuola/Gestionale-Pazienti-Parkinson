@@ -15,7 +15,7 @@ const dayjs = require('dayjs');
 const { Content, Footer, Sider } = Layout;
 
 const PatientsList = () => {
-
+  const personalId = JSON.parse(localStorage.getItem('user'))._id;
   const [patientsList, setPatientsList] = useState([]);
   const [open, setOpen] = useState(false);
   const [modalTask, setModalTaskId] = useState('');
@@ -78,8 +78,8 @@ const PatientsList = () => {
                           Indietro
                         </Button>,
                         <Button key="assist" type="primary">
-                          <Popconfirm title="Sei sicuro di voler assistere questo paziente?" onConfirm={() => assistPatient(JSON.parse(localStorage.getItem('user'))._id, modalTask._id)}>
-                            Assisti
+                          <Popconfirm title="Sei sicuro di voler seguire questo paziente?" onConfirm={() => assistPatient(personalId, modalTask._id)}>
+                            Segui
                           </Popconfirm>
                         </Button>,
                       ]}

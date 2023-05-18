@@ -6,9 +6,11 @@ import { Patients } from '../../api/Patients.js';
 /* eslint-disable quote-props */
 /* eslint-disable meteor/audit-argument-checks */
 Meteor.methods({
-  'getPatientsList': function () {
+  'getPatientsList': function (findAll) {
     try {
-      const patientsList = Patients.collection.find({ assistedBy: { $exists: false } }).fetch();
+      const condition = findAll ?? false;
+      let patientsList;
+      if (condition) { patientsList = Patients.collection.find({}).fetch(); } else { patientsList = Patients.collection.find({ assistedBy: { $exists: false } }).fetch(); }
       return patientsList;
     } catch (e) {
       throw new Meteor.Error('patientslist-retrievalerror', `C'è stato un errore nella richiesta della lista di pazienti, Errore: ${e}`);

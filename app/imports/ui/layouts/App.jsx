@@ -48,8 +48,8 @@ const App = () => {
           <Route path="/medic/home" element={<HomeMedic />} />
           <Route path="/medic/assistedpatientslist" element={<AssistedPatientsList />} />
           <Route path="/medic/patientslist" element={<PatientsList />} />
-          <Route path="/medic/admin/mediclist" element={<AdminMedicsList />} />
-          <Route path="/medic/admin/patientlist" element={<AdminPatientsList />} />
+          <Route path="/medic/admin/medicslist" element={<AdminMedicsList />} />
+          <Route path="/medic/admin/patientslist" element={<AdminPatientsList />} />
           <Route path="/patient/home" element={<HomePatient />} />
           <Route path="/patient/fogepisodeslist" element={<FogEpisodesList />} />
           <Route path="/patient/therapieslist" element={<TherapiesList />} />

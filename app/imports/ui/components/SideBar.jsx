@@ -25,8 +25,8 @@ const getAccountSidebarElements = role => {
         getItem('Elenco Pazienti', '/medic/patientslist', <UsergroupAddOutlined />),
       ]),
       getItem('Admin', 'sub2', <ToolOutlined />, [
-        getItem('Elenco Medici', '/medic/admin/mediclist', <FileOutlined />),
-        getItem('Elenco Pazienti', '/medic/admin/patientlist', <FileOutlined />),
+        getItem('Elenco Medici', '/medic/admin/medicslist', <FileOutlined />),
+        getItem('Elenco Pazienti', '/medic/admin/patientslist', <FileOutlined />),
       ]),
     ];
     const style = {

@@ -59,16 +59,24 @@ Meteor.methods({
       throw new Meteor.Error('account-login-error', `C'è stato un errore nel login all'account, Errore: ${e}`);
     }
   },
-  'deleteUserAccount': function (body) {
+  'deleteUserAccount': function (userId) {
     try {
-      const { userId } = body;
-      if (!isNil(Patients.collection.remove({ _id: userId })) || !isNil(Medics.collection.remove({ _id: userId }))) {
-        console.log('Account removed');
-      } else {
-        throw new Meteor.Error('invalid-credentials', 'Non esiste un account con queste credenziali');
-      }
+      Patients.collection.remove({ _id: userId });
+      Medics.collection.remove({ _id: userId });
+      console.log('Account removed');
     } catch (e) {
-      throw new Meteor.Error('account-deletion-error', `C'è stato un errore nella creazione dell'account, Errore: ${e}`);
+      throw new Meteor.Error('account-deletion-error', `C'è stato un errore nell'eliminazione dell'account, Errore: ${e}`);
+    }
+  },
+  'getAccountInfo': function (userId) {
+    try {
+      let user = Patients.collection.findOne({ _id: userId });
+      console.log(user);
+      if (isNil(user)) { user = Medics.collection.findOne({ _id: userId }); }
+      console.log(user);
+      return user;
+    } catch (e) {
+      throw new Meteor.Error('account-deletion-error', `C'è stato un errore nella ricerca dell'account, Errore: ${e}`);
     }
   },
 });
