@@ -33,6 +33,7 @@ const SignIn = () => {
       if (err) {
         setError(err.reason);
       } else {
+        console.log(localStorage.getItem('role'));
         localStorage.setItem('user', JSON.stringify(result.user));
         localStorage.setItem('role', result.role);
         setRedirect(true);
@@ -54,15 +55,15 @@ const SignIn = () => {
       onFinish={submit}
     >
       <Form.Item
-        name="username"
+        name="email"
         rules={[
           {
             required: true,
-            message: 'Please input your Username!',
+            message: 'Please input your email!',
           },
         ]}
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="E-Mail" />
       </Form.Item>
       <Form.Item
         name="password"

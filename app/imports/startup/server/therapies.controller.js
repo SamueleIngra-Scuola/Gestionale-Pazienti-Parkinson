@@ -7,9 +7,9 @@ import { Therapies } from '../../api/Therapies.js';
 
 Meteor.methods({
   'createTherapy': function (body) {
-    const { patient, drug, dosage, prescriptiondate } = body;
+    const { patientId, drug, dosage, prescriptiondate } = body;
     const therapy = {
-      patient: patient,
+      patient: patientId,
       drug: drug,
       dosage: dosage,
       prescriptiondate: prescriptiondate,
@@ -46,8 +46,8 @@ Meteor.methods({
   },
   'getTherapiesHistory': function (body) {
     try {
-      const { patient } = body;
-      const therapiesList = Therapies.collection.find({ patient: patient }).fetch();
+      const { patientId } = body;
+      const therapiesList = Therapies.collection.find({ patient: patientId }).fetch();
       return therapiesList;
     } catch (e) {
       throw new Meteor.Error('therapy-retrievalerror', `C'è stato un errore nella richiesta della lista di terapie, Errore: ${e}`);

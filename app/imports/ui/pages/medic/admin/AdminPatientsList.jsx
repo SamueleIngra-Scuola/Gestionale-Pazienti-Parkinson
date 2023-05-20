@@ -79,13 +79,14 @@ const AdminPatientsList = () => {
                       open={open}
                       title={`${modalTask.name} ${modalTask.surname}`}
                       onCancel={handleCancel}
+                      centered
                       footer={[
                         <Button type="text" key="back" onClick={handleCancel}>
                           Indietro
                         </Button>,
                         <Button key="forceleavepatient" type="primary" danger ghost>
                           <Popconfirm title="Sicuro di voler abbandonare questo paziente?" onConfirm={() => unassistPatient(modalTask.assistedBy, modalTask._id)}>
-                            Force-Abandon
+                            Force-Leave
                           </Popconfirm>
                         </Button>,
                         <Button key="deleteaccount" type="primary" danger ghost>

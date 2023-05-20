@@ -9,6 +9,7 @@ import { Layout, Menu, theme, Button,
   Modal,
   Popconfirm } from 'antd';
 import SideBar from '../../components/SideBar';
+import TherapiesHistory from '../patient/TherapiesHistory';
 
 const dayjs = require('dayjs');
 
@@ -30,6 +31,11 @@ const AssistedPatientsList = () => {
     Meteor.call('getAssistedPatientsList', { medicId: medicId }, (_, result) => {
       setPatientsList(result); // Store the fetched data in the state variable
     });
+  };
+
+  const openTherapyHistory = (patientId) => {
+    console.log(patientId);
+    return <TherapiesHistory id={patientId} />;
   };
 
   useEffect(() => {
@@ -65,7 +71,13 @@ const AssistedPatientsList = () => {
                 align: 'right',
                 render: (_, patient) => (
                   <Space size="middle">
-                    <Button type="primary" onClick={() => showModal(patient)}>
+                    <Button key="foghistory" type="primary" ghost>
+                      Storico FoG
+                    </Button>
+                    <Button key="therapyhistory" type="primary" onClick={() => openTherapyHistory(patient._id)} ghost>
+                      Storico Terapie
+                    </Button>
+                    <Button key="details" type="primary" onClick={() => showModal(patient)}>
                       Dettagli
                     </Button>
                     <Modal
@@ -73,15 +85,10 @@ const AssistedPatientsList = () => {
                       open={open}
                       title={`${modalTask.name} ${modalTask.surname}`}
                       onCancel={handleCancel}
+                      centered
                       footer={[
                         <Button type="text" key="back" onClick={handleCancel}>
                           Indietro
-                        </Button>,
-                        <Button key="foghistory" type="primary">
-                          Storico FoG
-                        </Button>,
-                        <Button key="therapyhistory" type="primary">
-                          Storico Terapie
                         </Button>,
                         <Button key="leavepatient" type="primary" danger ghost>
                           <Popconfirm title="Sicuro di voler abbandonare questo paziente?" onConfirm={() => unassistPatient(personalId, modalTask._id)}>
@@ -90,6 +97,7 @@ const AssistedPatientsList = () => {
                         </Button>,
                       ]}
                     >
+                      <SideBar />
                       <p>E-Mail: {modalTask.username}</p>
                       <p>Nome: {modalTask.name} {modalTask.surname}</p>
                       {/* <p>Data di Nascita: {dayjs(modalTask.birthday, 'DD/MM/YYYY')}</p> */}

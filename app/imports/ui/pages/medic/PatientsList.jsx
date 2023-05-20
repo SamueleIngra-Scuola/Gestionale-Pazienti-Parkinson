@@ -65,6 +65,11 @@ const PatientsList = () => {
                 align: 'right',
                 render: (_, patient) => (
                   <Space size="middle">
+                    <Button key="assist" type="primary" ghost>
+                      <Popconfirm title="Sei sicuro di voler seguire questo paziente?" onConfirm={() => assistPatient(personalId, patient._id)}>
+                        Segui
+                      </Popconfirm>
+                    </Button>
                     <Button type="primary" onClick={() => showModal(patient)}>
                       Dettagli
                     </Button>
@@ -73,6 +78,7 @@ const PatientsList = () => {
                       open={open}
                       title={`${modalTask.name} ${modalTask.surname}`}
                       onCancel={handleCancel}
+                      centered
                       footer={[
                         <Button type="text" key="back" onClick={handleCancel}>
                           Indietro

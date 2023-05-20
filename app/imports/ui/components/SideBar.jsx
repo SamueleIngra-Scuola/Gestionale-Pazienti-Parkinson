@@ -41,7 +41,7 @@ const getAccountSidebarElements = role => {
       getItem('Profilo', '/patient/home', <UserOutlined />),
       getItem('Storici', 'sub1', <FolderOpenOutlined />, [
         getItem('Storico FoG', '/patient/fogepisodeslist', <TeamOutlined />),
-        getItem('Storico Terapie', '/patient/therapieslist', <UsergroupAddOutlined />),
+        getItem('Storico Terapie', '/patient/therapieshistory', <UsergroupAddOutlined />),
       ]),
     ];
     const style = {

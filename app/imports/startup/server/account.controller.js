@@ -36,7 +36,7 @@ Meteor.methods({
       } else {
         throw new Meteor.Error('existing-email', 'Un account con questa E-Mail esiste già, inseriscine una diversa');
       }
-      console.log(user);
+      console.log(role);
       return { user: user, role: role };
     } catch (e) {
       throw new Meteor.Error('account-creation-error', `C'è stato un errore nella creazione dell'account, Errore: ${e}`);
@@ -46,13 +46,17 @@ Meteor.methods({
   'loginUserAccount': function (body) {
     try {
       const { email, password } = body;
-      let user = Patients.collection.findOne({ username: email, password: password });
+      let user = Patients.collection.findOne({ username: email });
+      console.log(user);
       if (!isNil(user)) {
-        return { user: user, role: 'patient' };
+        if (user.password === password) return { user: user, role: 'patient' };
+        throw new Meteor.Error('invalid-credentials', 'E-Mail o Password sbagliate, Riprova');
       }
-      user = Medics.collection.findOne({ username: email, password: password });
+      user = Medics.collection.findOne({ username: email });
+      console.log(user);
       if (!isNil(user)) {
-        return { user: user, role: 'medic' };
+        if (user.password === password) return { user: user, role: 'medic' };
+        throw new Meteor.Error('invalid-credentials', 'E-Mail o Password sbagliate, Riprova');
       }
       throw new Meteor.Error('invalid-credentials', 'E-Mail o Password sbagliate, Riprova');
     } catch (e) {

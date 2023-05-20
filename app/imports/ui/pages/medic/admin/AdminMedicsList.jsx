@@ -74,6 +74,7 @@ const AdminMedicList = () => {
                       open={open}
                       title={`${modalTask.name} ${modalTask.surname}`}
                       onCancel={handleCancel}
+                      centered
                       footer={[
                         <Button type="text" key="back" onClick={handleCancel}>
                           Indietro
