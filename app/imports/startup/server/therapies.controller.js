@@ -35,6 +35,14 @@ Meteor.methods({
       throw new Meteor.Error('therapy-edit-error', `C'è stato un errore nella modifica della terapia, Errore: ${e}`);
     }
   },
+  'deleteTherapy': function (therapyId) {
+    try {
+      Therapies.collection.remove({ _id: therapyId });
+      console.log('Therapy removed');
+    } catch (e) {
+      throw new Meteor.Error('therapy-deletion-error', `C'è stato un errore nell'eliminazione della terapia Errore: ${e}`);
+    }
+  },
   'getTherapy': function (body) {
     try {
       const { id } = body;

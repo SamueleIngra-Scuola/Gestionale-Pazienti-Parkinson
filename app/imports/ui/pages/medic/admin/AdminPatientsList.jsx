@@ -99,7 +99,7 @@ const AdminPatientsList = () => {
                       <p>ID: {modalTask._id}</p>
                       <p>E-Mail: {modalTask.username}</p>
                       <p>Nome: {modalTask.name} {modalTask.surname}</p>
-                      {/* <p>Data di Nascita: {dayjs(modalTask.birthday, 'DD/MM/YYYY')}</p> */}
+                      <p>Data di Nascita: {dayjs(modalTask.birthday).format('DD/MM/YYYY')}</p>
                       <p>Comune di Nascita: {modalTask.birthplace}</p>
                       <p>Numero di Telefono: {modalTask.phone}</p>
                       <p>Seguito Da: {modalTask.assistedBy}</p>

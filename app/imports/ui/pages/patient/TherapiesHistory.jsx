@@ -59,6 +59,31 @@ const TherapiesHistory = (patient) => {
               {
                 title: 'Data di Prescrizione',
                 dataIndex: 'prescriptiondate',
+                render: (record) => {
+                  <p>{dayjs(record.prescriptiondate).format('DD/MM/YYYY')}</p>;
+                },
+              },
+              {
+                render: (_, therapy) => (
+                  <Content>
+                    {localStorage.getItem('role') === 'medic'
+                      ? (
+                        <Space size="middle">
+                          <Button key="assist" type="primary" danger>
+                            <Popconfirm title="Sei sicuro di voler eliminare questa terapia?" onConfirm={() => deleteTherapy(therapy._id)}>
+                              Modifica
+                            </Popconfirm>
+                          </Button>
+                          <Button key="assist" type="primary" danger>
+                            <Popconfirm title="Sei sicuro di voler eliminare questa terapia?" onConfirm={() => deleteTherapy(therapy._id)}>
+                              Elimina
+                            </Popconfirm>
+                          </Button>
+                        </Space>
+                      )
+                      : ''}
+                  </Content>
+                ),
               },
             ]}
             dataSource={therapiesHistory}

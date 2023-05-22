@@ -13,6 +13,7 @@ class FogsCollection {
     // Define the structure of each document in the collection.
     this.schema = new SimpleSchema({
       patient: String,
+      length: Number,
       distance: Number,
       frequency: Number,
       intensity: {
@@ -20,10 +21,7 @@ class FogsCollection {
         min: 1,
         max: 5,
       },
-      episodedate: {
-        type: Date,
-        max: new Date(),
-      },
+      // episodedate: Date,
 
     });
     // Attach the schema to the collection, so all attempts to insert a document are checked against schema.

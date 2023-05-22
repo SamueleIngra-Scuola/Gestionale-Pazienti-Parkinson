@@ -21,7 +21,7 @@ import PatientsList from '../pages/medic/PatientsList';
 import AdminMedicsList from '../pages/medic/admin/AdminMedicsList';
 import AdminPatientsList from '../pages/medic/admin/AdminPatientsList';
 import HomePatient from '../pages/patient/HomePatient';
-import FogEpisodesList from '../pages/patient/FogEpisodesList';
+import FogEpisodesHistory from '../pages/patient/FogEpisodesHistory';
 import TherapiesHistory from '../pages/patient/TherapiesHistory';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
@@ -51,7 +51,7 @@ const App = () => {
           <Route path="/medic/admin/medicslist" element={<AdminMedicsList />} />
           <Route path="/medic/admin/patientslist" element={<AdminPatientsList />} />
           <Route path="/patient/home" element={<HomePatient />} />
-          <Route path="/patient/fogepisodeslist" element={<FogEpisodesList />} />
+          <Route path="/patient/fogepisodeshistory" element={<FogEpisodesHistory />} />
           <Route path="/patient/therapieshistory" element={<TherapiesHistory />} />
           <Route path="/notauthorized" element={<NotAuthorized />} />
           <Route path="*" element={<NotFound />} />
