@@ -59,9 +59,6 @@ const TherapiesHistory = (patient) => {
               {
                 title: 'Data di Prescrizione',
                 dataIndex: 'prescriptiondate',
-                render: (record) => {
-                  <p>{dayjs(record.prescriptiondate).format('DD/MM/YYYY')}</p>;
-                },
               },
               {
                 render: (_, therapy) => (

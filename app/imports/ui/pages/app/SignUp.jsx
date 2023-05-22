@@ -6,8 +6,7 @@ import { Navigate } from 'react-router-dom';
 import { Select, Button, Form, Input, DatePicker } from 'antd';
 import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
 import dayjs from 'dayjs';
-
-const utc = require('dayjs/plugin/utc');
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
@@ -47,7 +46,6 @@ const SignUp = ({ location }) => {
       role: role,
     };
 
-    console.log(dayjs.utc().format());
     /* Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
         setError(err.reason);

@@ -21,7 +21,7 @@ class FogsCollection {
         min: 1,
         max: 5,
       },
-      // episodedate: Date,
+      episodedate: Date,
 
     });
     // Attach the schema to the collection, so all attempts to insert a document are checked against schema.

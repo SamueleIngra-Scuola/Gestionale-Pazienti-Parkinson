@@ -13,12 +13,12 @@ import { Layout, Menu, theme, Button,
   InputNumber,
   DatePicker,
   TimePicker } from 'antd';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
 import SideBar from '../../components/SideBar';
 
 const dayjs = require('dayjs');
 
-dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 const { Content, Footer, Sider } = Layout;
 
@@ -26,10 +26,13 @@ const FogEpisodesHistory = (patient) => {
   const { id } = patient ?? undefined;
   const personalId = id ?? JSON.parse(localStorage.getItem('user'))._id;
   const [fogEpisodes, setFogEpisodes] = useState([]);
+  const [state, setModalState] = useState('');
+  const [modalTask, setModalTaskId] = useState('Crea');
   const [open, setOpen] = useState(false);
-  const [modalTask, setModalTaskId] = useState('');
-  const showModal = (record) => {
-    setModalTaskId(record);
+  const [form] = Form.useForm();
+  const showModal = () => {
+    form.resetFields();
+    setModalState('Crea');
     setOpen(true);
   };
   const handleCancel = () => {
@@ -45,9 +48,14 @@ const FogEpisodesHistory = (patient) => {
     getFogEpisodes(personalId); // Fetch the patient list when the component mounts
   }, []);
 
-  const createFogEpisode = (body) => {
-    const { length, distance, frequency, intensity, episodedate } = body;
+  const upsertFogEpisode = (body) => {
+    console.log(body);
+    const { length, distance, frequency, intensity } = body;
+    let { episodedate } = body;
+    episodedate = dayjs.utc(episodedate).format();
+    console.log(episodedate);
     const episode = {
+      id: modalTask._id,
       patient: personalId,
       length: length,
       distance: distance,
@@ -55,10 +63,25 @@ const FogEpisodesHistory = (patient) => {
       intensity: intensity,
       episodedate: episodedate,
     };
-    Meteor.call('createFogEpisode', episode, (err) => {
+    Meteor.call('upsertFogEpisode', episode, () => {
       setOpen(false);
       getFogEpisodes(personalId);
     });
+  };
+
+  const editFogEpisode = (episode) => {
+    setModalTaskId(episode);
+    console.log(episode);
+    setModalState('Modifica');
+    form.resetFields();
+    form.setFields([{
+      length: modalTask.length,
+      distance: modalTask.distance,
+      frequency: modalTask.frequency,
+      intensity: modalTask.intensity,
+      episodedate: modalTask.episodedate,
+    }]);
+    setOpen(true);
   };
 
   const deleteFogEpisode = (episodeId) => {
@@ -83,15 +106,15 @@ const FogEpisodesHistory = (patient) => {
           <Table
             columns={[
               {
-                title: 'Durata Episodio',
+                title: 'Durata Episodio (s)',
                 dataIndex: 'length',
               },
               {
-                title: 'Lunghezza di Passo',
+                title: 'Lunghezza di Passo (m)',
                 dataIndex: 'distance',
               },
               {
-                title: 'Frequenza di Passo',
+                title: 'Frequenza di Passo (Hz)',
                 dataIndex: 'frequency',
               },
               {
@@ -104,10 +127,13 @@ const FogEpisodesHistory = (patient) => {
                     {localStorage.getItem('role') === 'patient'
                       ? (
                         <Space size="middle">
-                          <Button key="assist" type="primary" danger>
+                          <Button key="delete" type="primary" danger>
                             <Popconfirm title="Sei sicuro di voler eliminare questo episodio?" onConfirm={() => deleteFogEpisode(episode._id)}>
                               Elimina
                             </Popconfirm>
+                          </Button>
+                          <Button key="edit" type="primary" onClick={() => editFogEpisode(episode)}>
+                            Modifica
                           </Button>
                         </Space>
                       )
@@ -121,7 +147,7 @@ const FogEpisodesHistory = (patient) => {
           <Modal
             className="Modal"
             open={open}
-            title="Crea un nuovo episodio"
+            title={state}
             onCancel={handleCancel}
             centered
             footer={[
@@ -129,11 +155,9 @@ const FogEpisodesHistory = (patient) => {
           >
             <Form
               name="form"
+              form={form}
               className="fog-form"
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={createFogEpisode}
+              onFinish={upsertFogEpisode}
             >
               <Form.Item
                 name="length"
@@ -145,7 +169,7 @@ const FogEpisodesHistory = (patient) => {
                   },
                 ]}
               >
-                <InputNumber />
+                <InputNumber min={1} />
               </Form.Item>
               <Form.Item
                 name="distance"
@@ -157,7 +181,7 @@ const FogEpisodesHistory = (patient) => {
                   },
                 ]}
               >
-                <InputNumber />
+                <InputNumber min={1} />
               </Form.Item>
               <Form.Item
                 name="frequency"
@@ -169,7 +193,7 @@ const FogEpisodesHistory = (patient) => {
                   },
                 ]}
               >
-                <InputNumber />
+                <InputNumber min={1} />
               </Form.Item>
               <Form.Item
                 name="intensity"
@@ -183,7 +207,7 @@ const FogEpisodesHistory = (patient) => {
               >
                 <InputNumber min={1} max={5} />
               </Form.Item>
-              { /* <Form.Item
+              <Form.Item
                 name="episodedate"
                 label="Orario Accaduto"
                 rules={[
@@ -197,11 +221,11 @@ const FogEpisodesHistory = (patient) => {
                   },
                 ]}
               >
-                <TimePicker defaultOpenValue={dayjs('00:00:00', 'HH:mm:ss')} placeholder="Orario" />
-              </Form.Item> */}
+                <DatePicker showTime format="DD/MM/YYYY HH:mm:ss" />
+              </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">
-                  Crea
+                  {state} Episodio
                 </Button>
               </Form.Item>
             </Form>
