@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
 import SimpleSchema from 'simpl-schema';
@@ -8,6 +8,7 @@ import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstra
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import '../../styles/SignIn.css';
+import { Content } from 'antd/es/layout/layout';
 /**
  * Signin page overrides the form’s submit event and call Meteor’s loginWithPassword().
  * Authentication errors modify the component’s state to be displayed
@@ -15,11 +16,10 @@ import '../../styles/SignIn.css';
 const SignIn = () => {
   const [error, setError] = useState('');
   const [redirectToHome, setRedirect] = useState(false);
-  const schema = new SimpleSchema({
-    email: String,
-    password: String,
-  });
-  const bridge = new SimpleSchema2Bridge(schema);
+  const navigate = useNavigate();
+  const gotoRegister = () => {
+    navigate('/signup');
+  };
   const submit = (doc) => {
     // console.log('submit', doc, redirect);
     /* Meteor.loginWithPassword(email, password, (err) => {
@@ -43,7 +43,7 @@ const SignIn = () => {
     // console.log('submit2', email, password, error, redirect);
   };
   if (redirectToHome) {
-    return <Navigate to={`/${localStorage.getItem('role')}/home`} />;
+    return <Navigate to="/panel/home" />;
   }
   return (
     <Form
@@ -85,8 +85,13 @@ const SignIn = () => {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>
-        Oppure <a href="">registrati ora!</a>
       </Form.Item>
+      <Content>
+        Oppure
+        <Button type="link" htmlType="submit" className="register-form-button" onClick={gotoRegister}>
+          Registrati Ora!
+        </Button>
+      </Content>
     </Form>
   );
 };

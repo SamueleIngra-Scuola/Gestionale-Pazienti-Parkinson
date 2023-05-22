@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 // import { Accounts } from 'meteor/accounts-base';
 import { Select, Button, Form, Input, DatePicker } from 'antd';
 import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
@@ -24,6 +24,10 @@ const SignUp = ({ location }) => {
 
   const [error, setError] = useState('');
   const [redirectToHome, setRedirect] = useState(false);
+  const navigate = useNavigate();
+  const gotoLogin = () => {
+    navigate('/signin');
+  };
 
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
@@ -104,7 +108,7 @@ const SignUp = ({ location }) => {
   };
   // if correct authentication, redirect to from: page instead of signup screen
   if (redirectToHome) {
-    return <Navigate to={`/${localStorage.getItem('role')}/home`} />;
+    return <Navigate to="/panel/home" />;
   }
   const { Option } = Select;
 
@@ -305,7 +309,7 @@ const SignUp = ({ location }) => {
         <Button type="primary" htmlType="submit">
           Registrati
         </Button>
-        <Button type="link" htmlType="submit" style={{ marginLeft: 5 }}>
+        <Button type="link" htmlType="submit" onClick={gotoLogin} style={{ marginLeft: 5 }}>
           Hai già un account? Accedi qui
         </Button>
       </Form.Item>

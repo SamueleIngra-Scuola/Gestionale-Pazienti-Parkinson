@@ -6,29 +6,30 @@ import { Therapies } from '../../api/Therapies.js';
 /* eslint-disable meteor/audit-argument-checks */
 
 Meteor.methods({
-  'createTherapy': function (body) {
-    const { patientId, drug, dosage, prescriptiondate } = body;
-    const therapy = {
-      patient: patientId,
-      drug: drug,
-      dosage: dosage,
-      prescriptiondate: prescriptiondate,
-    };
-
+  'upsertTherapy': function (body) {
     try {
-      Therapies.collection.insert(therapy);
+      const { id, patient, drug, dosage, prescriptiondate } = body;
+      Therapies.collection.upsert({ _id: id }, {
+        $set: {
+          patient: patient,
+          drug: drug,
+          dosage: dosage,
+          prescriptiondate: prescriptiondate,
+        },
+      });
     } catch (e) {
       throw new Meteor.Error('therapy-create-error', `C'è stato un errore nella creazione della terapia, Errore: ${e}`);
     }
   },
   'editTherapy': function (body) {
-    const { id, drug, dosage } = body;
+    const { id, drug, dosage, prescriptiondate } = body;
 
     try {
       Therapies.collection.update({ _id: id }, {
         $push: {
           drug: drug,
           dosage: dosage,
+          prescriptiondate: prescriptiondate,
         },
       });
     } catch (e) {
@@ -52,9 +53,8 @@ Meteor.methods({
       throw new Meteor.Error('therapy-retrievalerror', `C'è stato un errore nella richiesta della terapia, Errore: ${e}`);
     }
   },
-  'getTherapiesHistory': function (body) {
+  'getTherapiesHistory': function (patientId) {
     try {
-      const { patientId } = body;
       const therapiesList = Therapies.collection.find({ patient: patientId }).fetch();
       return therapiesList;
     } catch (e) {

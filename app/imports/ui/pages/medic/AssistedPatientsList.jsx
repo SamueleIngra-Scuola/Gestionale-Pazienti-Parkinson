@@ -8,14 +8,15 @@ import { Layout, Menu, theme, Button,
   Table,
   Modal,
   Popconfirm } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import SideBar from '../../components/SideBar';
-import TherapiesHistory from '../patient/TherapiesHistory';
 
 const dayjs = require('dayjs');
 
 const { Content, Footer, Sider } = Layout;
 
 const AssistedPatientsList = () => {
+  const navigate = useNavigate();
   const personalId = JSON.parse(localStorage.getItem('user'))._id;
   const [patientsList, setPatientsList] = useState([]);
   const [open, setOpen] = useState(false);
@@ -33,9 +34,22 @@ const AssistedPatientsList = () => {
     });
   };
 
-  const openTherapyHistory = (patientId) => {
-    console.log(patientId);
-    return <TherapiesHistory id={patientId} />;
+  const openTherapiesHistory = (patient) => {
+    console.log(patient);
+    navigate('/patient/therapieshistory', {
+      state: {
+        patient: patient,
+      },
+    });
+  };
+
+  const openFogEpisodesHistory = (patient) => {
+    console.log(patient);
+    navigate('/patient/fogepisodeshistory', {
+      state: {
+        patient: patient,
+      },
+    });
   };
 
   useEffect(() => {
@@ -71,10 +85,10 @@ const AssistedPatientsList = () => {
                 align: 'right',
                 render: (_, patient) => (
                   <Space size="middle">
-                    <Button key="foghistory" type="primary" ghost>
+                    <Button key="foghistory" type="primary" onClick={() => openFogEpisodesHistory(patient)} ghost>
                       Storico FoG
                     </Button>
-                    <Button key="therapyhistory" type="primary" onClick={() => openTherapyHistory(patient._id)} ghost>
+                    <Button key="therapyhistory" type="primary" onClick={() => openTherapiesHistory(patient)} ghost>
                       Storico Terapie
                     </Button>
                     <Button key="details" type="primary" onClick={() => showModal(patient)}>

@@ -4,10 +4,6 @@ import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import ListStuff from '../pages/app/ListStuff';
-import ListStuffAdmin from '../pages/app/ListStuffAdmin';
-import AddStuff from '../pages/app/AddStuff';
-import EditStuff from '../pages/app/EditStuff';
 import NotFound from '../pages/NotFound';
 import SignUp from '../pages/app/SignUp';
 import SignOut from '../pages/app/SignOut';
@@ -15,12 +11,11 @@ import SignIn from '../pages/app/SignIn';
 import NotAuthorized from '../pages/NotAuthorized';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Landing from '../pages/Landing';
-import HomeMedic from '../pages/medic/HomeMedic';
+import Home from '../pages/app/Home';
 import AssistedPatientsList from '../pages/medic/AssistedPatientsList';
 import PatientsList from '../pages/medic/PatientsList';
 import AdminMedicsList from '../pages/medic/admin/AdminMedicsList';
 import AdminPatientsList from '../pages/medic/admin/AdminPatientsList';
-import HomePatient from '../pages/patient/HomePatient';
 import FogEpisodesHistory from '../pages/patient/FogEpisodesHistory';
 import TherapiesHistory from '../pages/patient/TherapiesHistory';
 
@@ -41,18 +36,13 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signout" element={<SignOut />} />
           <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
-          <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
-          <Route path="/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
-          <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
-          <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />  
-          <Route path="/medic/home" element={<HomeMedic />} />
-          <Route path="/medic/assistedpatientslist" element={<AssistedPatientsList />} />
-          <Route path="/medic/patientslist" element={<PatientsList />} />
-          <Route path="/medic/admin/medicslist" element={<AdminMedicsList />} />
-          <Route path="/medic/admin/patientslist" element={<AdminPatientsList />} />
-          <Route path="/patient/home" element={<HomePatient />} />
-          <Route path="/patient/fogepisodeshistory" element={<FogEpisodesHistory />} />
-          <Route path="/patient/therapieshistory" element={<TherapiesHistory />} />
+          <Route path="/panel/home" element={<Home />} />
+          <Route path="/panel/assistedpatientslist" element={<AssistedPatientsList />} />
+          <Route path="/panel/patientslist" element={<PatientsList />} />
+          <Route path="/panel/admin/medicslist" element={<AdminMedicsList />} />
+          <Route path="/panel/admin/patientslist" element={<AdminPatientsList />} />
+          <Route path="/panel/fogepisodeshistory" element={<FogEpisodesHistory />} />
+          <Route path="/panel/therapieshistory" element={<TherapiesHistory />} />
           <Route path="/notauthorized" element={<NotAuthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

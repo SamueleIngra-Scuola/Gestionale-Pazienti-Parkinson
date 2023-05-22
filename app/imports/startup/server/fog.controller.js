@@ -40,10 +40,9 @@ Meteor.methods({
       throw new Meteor.Error('fog-retrievalerror', `C'è stato un errore nella richiesta dell'episodio FoG, Errore: ${e}`);
     }
   },
-  'getFogEpisodes': function (body) {
+  'getFogEpisodes': function (patientId) {
     try {
-      const { patient } = body;
-      const episodesList = Fogs.collection.find({ patient: patient }).fetch();
+      const episodesList = Fogs.collection.find({ patient: patientId }).fetch();
       return episodesList;
     } catch (e) {
       throw new Meteor.Error('fog-retrievalerror', `C'è stato un errore nella richiesta della lista di episodi FoG, Errore: ${e}`);

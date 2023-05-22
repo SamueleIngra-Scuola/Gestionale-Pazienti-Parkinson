@@ -11,9 +11,9 @@ import { Layout, Menu, theme, Button,
   Form,
   Input,
   InputNumber,
-  DatePicker,
-  TimePicker } from 'antd';
+  DatePicker } from 'antd';
 import utc from 'dayjs/plugin/utc';
+import { useLocation } from 'react-router-dom';
 import SideBar from '../../components/SideBar';
 
 const dayjs = require('dayjs');
@@ -22,12 +22,13 @@ dayjs.extend(utc);
 
 const { Content, Footer, Sider } = Layout;
 
-const FogEpisodesHistory = (patient) => {
-  const { id } = patient ?? undefined;
-  const personalId = id ?? JSON.parse(localStorage.getItem('user'))._id;
+const FogEpisodesHistory = () => {
+  const location = useLocation();
+  const { _id = undefined, name = undefined, surname = undefined } = location.state?.patient ?? {};
+  const personalId = _id ?? JSON.parse(localStorage.getItem('user'))._id;
   const [fogEpisodes, setFogEpisodes] = useState([]);
-  const [state, setModalState] = useState('');
-  const [modalTask, setModalTaskId] = useState('Crea');
+  const [state, setModalState] = useState('Crea');
+  const [modalTask, setModalTaskId] = useState('');
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const showModal = () => {
@@ -39,6 +40,8 @@ const FogEpisodesHistory = (patient) => {
     setOpen(false);
   };
   const getFogEpisodes = (patientId) => {
+    console.log(patientId);
+    console.log(JSON.parse(localStorage.getItem('user'))._id);
     Meteor.call('getFogEpisodes', patientId, (_, result) => {
       setFogEpisodes(result); // Store the fetched data in the state variable
     });
@@ -65,6 +68,7 @@ const FogEpisodesHistory = (patient) => {
     };
     Meteor.call('upsertFogEpisode', episode, () => {
       setOpen(false);
+      setModalTaskId({});
       getFogEpisodes(personalId);
     });
   };
@@ -96,9 +100,16 @@ const FogEpisodesHistory = (patient) => {
       <SideBar />
       <Content>
         <Card title="Storico FoG">
+          {localStorage.getItem('role') === 'medic'
+            ? (
+              <Content>
+                {name} {surname}
+              </Content>
+            )
+            : ''}
           {localStorage.getItem('role') === 'patient'
             ? (
-              <Button type="primary" onClick={() => showModal(patient)}>
+              <Button type="primary" onClick={showModal}>
                 Aggiungi Episodio di FoG
               </Button>
             )
@@ -120,6 +131,11 @@ const FogEpisodesHistory = (patient) => {
               {
                 title: 'Indice di Freezing',
                 dataIndex: 'intensity',
+              },
+              {
+                title: 'Orario Accaduto',
+                dataIndex: 'episodedate',
+                render: (_, record) => `${dayjs(record.episodedate).format('DD/MM/YYYY HH:mm:ss')}`, // just for decoration
               },
               {
                 render: (_, episode) => (
@@ -161,7 +177,7 @@ const FogEpisodesHistory = (patient) => {
             >
               <Form.Item
                 name="length"
-                label="Durata Episodio"
+                label="Durata Episodio (s)"
                 rules={[
                   {
                     required: true,
@@ -173,7 +189,7 @@ const FogEpisodesHistory = (patient) => {
               </Form.Item>
               <Form.Item
                 name="distance"
-                label="Lunghezza di Passo"
+                label="Lunghezza di Passo (m)"
                 rules={[
                   {
                     required: true,
@@ -185,7 +201,7 @@ const FogEpisodesHistory = (patient) => {
               </Form.Item>
               <Form.Item
                 name="frequency"
-                label="Frequenza di Passo"
+                label="Frequenza di Passo (Hz)"
                 rules={[
                   {
                     required: true,
