@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -87,7 +88,16 @@ const SignUp = () => {
 
   const [form] = Form.useForm();
   const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
+    <Form.Item
+      labelCol={{
+        span: 4,
+      }}
+      wrapperCol={{
+        span: 18,
+      }}
+      name="prefix"
+      noStyle
+    >
       <Select
         style={{
           width: 70,
@@ -116,8 +126,13 @@ const SignUp = () => {
     >
 
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="email"
-        label="E-mail"
         rules={[
           {
             type: 'email',
@@ -129,32 +144,42 @@ const SignUp = () => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="E-Mail" />
       </Form.Item>
 
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="password"
-        label="Password"
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: 'Inserisci la tua password',
           },
         ]}
         hasFeedback
       >
-        <Input.Password />
+        <Input.Password placeholder="Password" />
       </Form.Item>
 
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="confirm"
-        label="Confirm Password"
         dependencies={['password']}
         hasFeedback
         rules={[
           {
             required: true,
-            message: 'Please confirm your password!',
+            message: 'Conferma la tua passowrd',
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -168,12 +193,17 @@ const SignUp = () => {
           }),
         ]}
       >
-        <Input.Password />
+        <Input.Password placeholder="Conferma Password" />
       </Form.Item>
 
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="name"
-        label="Nome"
         rules={[
           {
             type: 'name',
@@ -185,11 +215,16 @@ const SignUp = () => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="Nome" />
       </Form.Item>
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="surname"
-        label="Cognome"
         rules={[
           {
             type: 'surname',
@@ -201,15 +236,20 @@ const SignUp = () => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="Cognome" />
       </Form.Item>
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="birthday"
-        label="Data di Nascita"
         rules={[
           {
             type: 'birthday',
-            message: 'The input is not valid date',
+            message: 'La data non è valida',
           },
           {
             required: true,
@@ -217,12 +257,17 @@ const SignUp = () => {
           },
         ]}
       >
-        <DatePicker format="DD/MM/YYYY" />
+        <DatePicker format="DD/MM/YYYY" placeholder="Data di Nascita" />
       </Form.Item>
 
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="birthplace"
-        label="Comune di Nascita"
         rules={[
           {
             required: true,
@@ -230,16 +275,21 @@ const SignUp = () => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="Comune di Nascita" />
       </Form.Item>
 
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="phone"
-        label="Phone Number"
         rules={[
           {
             required: true,
-            message: 'Please input your phone number!',
+            message: 'Inserisci il tuo numero di telefono',
           },
         ]}
       >
@@ -248,10 +298,17 @@ const SignUp = () => {
           style={{
             width: '100%',
           }}
+          placeholder="000 000 0000"
         />
       </Form.Item>
 
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="role"
         label="Tipo Account:"
         rules={[
@@ -278,7 +335,15 @@ const SignUp = () => {
         />
       </Form.Item>
       { /* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <Form.Item {...tailFormItemLayout}>
+      <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
+        {...tailFormItemLayout}
+      >
         <Button type="primary" htmlType="submit">
           Registrati
         </Button>

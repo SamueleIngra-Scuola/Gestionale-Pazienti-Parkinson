@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
@@ -42,6 +42,12 @@ const SignIn = () => {
       onFinish={submit}
     >
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="email"
         rules={[
           {
@@ -53,6 +59,12 @@ const SignIn = () => {
         <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="E-Mail" />
       </Form.Item>
       <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
         name="password"
         rules={[
           {
@@ -68,7 +80,14 @@ const SignIn = () => {
         />
       </Form.Item>
 
-      <Form.Item>
+      <Form.Item
+        labelCol={{
+          span: 4,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
+      >
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>

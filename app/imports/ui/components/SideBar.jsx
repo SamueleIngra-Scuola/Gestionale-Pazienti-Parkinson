@@ -22,11 +22,11 @@ const getAccountSidebarElements = role => {
       getItem('Profilo', '/panel/home', <UserOutlined />),
       getItem('Pazienti', 'sub1', <FolderOpenOutlined />, [
         getItem('Pazienti Seguiti', '/panel/assistedpatientslist', <TeamOutlined />),
-        getItem('Elenco Pazienti', '/panel/patientslist', <UsergroupAddOutlined />),
+        getItem('Elenco Pazienti', '/panel/patientslist', <TeamOutlined />),
       ]),
       getItem('Admin', 'sub2', <ToolOutlined />, [
-        getItem('Elenco Medici', '/panel/admin/medicslist', <FileOutlined />),
-        getItem('Elenco Pazienti', '/panel/admin/patientslist', <FileOutlined />),
+        getItem('Elenco Medici', '/panel/admin/medicslist', <TeamOutlined />),
+        getItem('Elenco Pazienti', '/panel/admin/patientslist', <TeamOutlined />),
       ]),
     ];
     const style = {
@@ -40,8 +40,8 @@ const getAccountSidebarElements = role => {
     const items = [
       getItem('Profilo', '/panel/home', <UserOutlined />),
       getItem('Storici', 'sub1', <FolderOpenOutlined />, [
-        getItem('Storico FoG', '/panel/fogepisodeshistory', <TeamOutlined />),
-        getItem('Storico Terapie', '/panel/therapieshistory', <UsergroupAddOutlined />),
+        getItem('Storico FoG', '/panel/fogepisodeshistory', <FileOutlined />),
+        getItem('Storico Terapie', '/panel/therapieshistory', <FileOutlined />),
       ]),
     ];
     const style = {

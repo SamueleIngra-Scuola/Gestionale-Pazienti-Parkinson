@@ -10,7 +10,6 @@ import SignOut from '../pages/app/SignOut';
 import SignIn from '../pages/app/SignIn';
 import NotAuthorized from '../pages/NotAuthorized';
 import LoadingSpinner from '../components/LoadingSpinner';
-import Landing from '../pages/Landing';
 import Home from '../pages/app/Home';
 import AssistedPatientsList from '../pages/medic/AssistedPatientsList';
 import PatientsList from '../pages/medic/PatientsList';
@@ -31,7 +30,7 @@ const App = () => {
     <Router>
       <div className="d-flex flex-column min-vh-100">
         <Routes>
-          <Route exact path="/" element={<Landing />} />
+          <Route exact path="/" element={<SignIn />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signout" element={<SignOut />} />
@@ -83,7 +82,7 @@ ProtectedRoute.propTypes = {
 };
 
 ProtectedRoute.defaultProps = {
-  children: <Landing />,
+  children: <SignIn />,
 };
 
 // Require a component and location to be passed to each AdminProtectedRoute.
@@ -94,7 +93,7 @@ AdminProtectedRoute.propTypes = {
 
 AdminProtectedRoute.defaultProps = {
   ready: false,
-  children: <Landing />,
+  children: <SignIn />,
 };
 
 export default App;

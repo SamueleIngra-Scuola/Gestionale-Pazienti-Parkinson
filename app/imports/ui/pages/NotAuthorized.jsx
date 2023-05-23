@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const NotAuthorized = () => {
   const navigate = useNavigate();
   const gotoHome = () => {
-    navigate('/');
+    navigate('/signin');
   };
   return (
     <Container className="py-3">
@@ -17,7 +17,7 @@ const NotAuthorized = () => {
           <h2>
             <p>Not Authorized</p>
             <Button onClick={gotoHome}>
-              Torna alla Home
+              Accedi
             </Button>
           </h2>
         </Col>
