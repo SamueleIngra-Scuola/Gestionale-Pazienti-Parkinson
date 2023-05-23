@@ -1,18 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import '../../styles/HomeMedic.css';
-import { FileOutlined, UserOutlined, FolderOpenOutlined, ToolOutlined, TeamOutlined, UsergroupAddOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, Button,
-  Card,
-  Space,
-  Table,
-  Modal,
-  Popconfirm } from 'antd';
+import { Layout, Button, Card, Space, Table, Modal, Popconfirm } from 'antd';
 import SideBar from '../../components/SideBar';
 
 const dayjs = require('dayjs');
 
-const { Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 const PatientsList = () => {
   const personalId = JSON.parse(localStorage.getItem('user'))._id;

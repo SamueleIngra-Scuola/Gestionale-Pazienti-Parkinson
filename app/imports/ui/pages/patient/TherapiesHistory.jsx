@@ -1,17 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import '../../styles/HomeMedic.css';
-import { FileOutlined, UserOutlined, FolderOpenOutlined, ToolOutlined, TeamOutlined, UsergroupAddOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, Button,
-  Card,
-  Space,
-  Table,
-  Modal,
-  Popconfirm,
-  Form,
-  Input,
-  InputNumber,
-  DatePicker } from 'antd';
+import { Layout, Button, Card, Space, Table, Modal, Popconfirm, Form, Input, InputNumber, DatePicker } from 'antd';
 import utc from 'dayjs/plugin/utc';
 import { useLocation } from 'react-router-dom';
 import SideBar from '../../components/SideBar';
@@ -20,7 +10,7 @@ const dayjs = require('dayjs');
 
 dayjs.extend(utc);
 
-const { Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 const TherapiesHistory = () => {
   const location = useLocation();
@@ -53,7 +43,6 @@ const TherapiesHistory = () => {
     const { drug, dosage } = body;
     let { prescriptiondate } = body;
     prescriptiondate = dayjs.utc(prescriptiondate).format();
-    console.log(personalId);
     const therapy = {
       id: modalTask._id,
       patient: personalId,
@@ -70,16 +59,8 @@ const TherapiesHistory = () => {
 
   const editTherapy = (therapy) => {
     setModalTaskId(therapy);
-    console.log(therapy);
     setModalState('Modifica');
     form.resetFields();
-    form.setFields([{
-      length: modalTask.length,
-      distance: modalTask.distance,
-      frequency: modalTask.frequency,
-      intensity: modalTask.intensity,
-      therapydate: modalTask.therapydate,
-    }]);
     setOpen(true);
   };
 

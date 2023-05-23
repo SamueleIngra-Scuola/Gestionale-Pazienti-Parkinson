@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../../styles/HomeMedic.css';
-import { Layout, Menu, theme, Button,
-  Card,
-  Space,
-  Table,
-  Modal,
-  Popconfirm } from 'antd';
+import { Layout, Button, Card, Popconfirm } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import utc from 'dayjs/plugin/utc';
 import SideBar from '../../components/SideBar';
@@ -14,7 +9,7 @@ const dayjs = require('dayjs');
 
 dayjs.extend(utc);
 
-const { Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 const Home = () => {
   const navigate = useNavigate();

@@ -35,14 +35,13 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signout" element={<SignOut />} />
-          <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
           <Route path="/panel/home" element={<Home />} />
-          <Route path="/panel/assistedpatientslist" element={<AssistedPatientsList />} />
-          <Route path="/panel/patientslist" element={<PatientsList />} />
-          <Route path="/panel/admin/medicslist" element={<AdminMedicsList />} />
-          <Route path="/panel/admin/patientslist" element={<AdminPatientsList />} />
-          <Route path="/panel/fogepisodeshistory" element={<FogEpisodesHistory />} />
-          <Route path="/panel/therapieshistory" element={<TherapiesHistory />} />
+          <Route path="/panel/assistedpatientslist" element={<AdminProtectedRoute ready={ready}> <AssistedPatientsList /> </AdminProtectedRoute>} />
+          <Route path="/panel/patientslist" element={<AdminProtectedRoute ready={ready}> <PatientsList /> </AdminProtectedRoute>} />
+          <Route path="/panel/admin/medicslist" element={<AdminProtectedRoute ready={ready}> <AdminMedicsList /> </AdminProtectedRoute>} />
+          <Route path="/panel/admin/patientslist" element={<AdminProtectedRoute ready={ready}> <AdminPatientsList /> </AdminProtectedRoute>} />
+          <Route path="/panel/fogepisodeshistory" element={<ProtectedRoute> <FogEpisodesHistory /> </ProtectedRoute>} />
+          <Route path="/panel/therapieshistory" element={<ProtectedRoute>  <TherapiesHistory /> </ProtectedRoute>} />
           <Route path="/notauthorized" element={<NotAuthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -57,7 +56,7 @@ const App = () => {
  * @param {any} { component: Component, ...rest }
  */
 const ProtectedRoute = ({ children }) => {
-  const isLogged = Meteor.userId() !== null;
+  const isLogged = JSON.parse(localStorage.getItem('user'))._id !== null;
   return isLogged ? children : <Navigate to="/signin" />;
 };
 
@@ -67,14 +66,14 @@ const ProtectedRoute = ({ children }) => {
  * @param {any} { component: Component, ...rest }
  */
 const AdminProtectedRoute = ({ ready, children }) => {
-  const isLogged = Meteor.userId() !== null;
+  const isLogged = JSON.parse(localStorage.getItem('user'))._id !== null;
   if (!isLogged) {
     return <Navigate to="/signin" />;
   }
   if (!ready) {
     return <LoadingSpinner />;
   }
-  const isAdmin = Roles.userIsInRole(Meteor.userId(), 'admin');
+  const isAdmin = localStorage.getItem('role') === 'medic';
   return (isLogged && isAdmin) ? children : <Navigate to="/notauthorized" />;
 };
 

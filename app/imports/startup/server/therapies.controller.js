@@ -9,6 +9,7 @@ Meteor.methods({
   'upsertTherapy': function (body) {
     try {
       const { id, patient, drug, dosage, prescriptiondate } = body;
+
       Therapies.collection.upsert({ _id: id }, {
         $set: {
           patient: patient,
@@ -44,38 +45,13 @@ Meteor.methods({
       throw new Meteor.Error('therapy-deletion-error', `C'è stato un errore nell'eliminazione della terapia Errore: ${e}`);
     }
   },
-  'getTherapy': function (body) {
-    try {
-      const { id } = body;
-      const therapy = Therapies.collection.findOne({ _id: id });
-      return therapy;
-    } catch (e) {
-      throw new Meteor.Error('therapy-retrievalerror', `C'è stato un errore nella richiesta della terapia, Errore: ${e}`);
-    }
-  },
   'getTherapiesHistory': function (patientId) {
     try {
       const therapiesList = Therapies.collection.find({ patient: patientId }).fetch();
+
       return therapiesList;
     } catch (e) {
       throw new Meteor.Error('therapy-retrievalerror', `C'è stato un errore nella richiesta della lista di terapie, Errore: ${e}`);
     }
   },
 });
-
-/* if (Meteor.settings.defaultAccounts) {
-  console.log('Creating the default user(s)');
-  Meteor.settings.defaultAccounts.forEach(({ email, password, name, surname, phone, birthday, birthplace, role }) => createUser(email, password, name, surname, phone, birthday, birthplace, role));
-} else {
-  console.log('Cannot initialize the database!  Please invoke meteor with a settings file.');
-} */
-
-// When running app for first time, pass a settings file to set up a default user account.
-/* if (Meteor.users.find().count() === 0) {
-  if (Meteor.settings.defaultAccounts) {
-    console.log('Creating the default user(s)');
-    Meteor.settings.defaultAccounts.forEach(({ email, password, name, surname, phone, birthday, birthplace, role }) => createUser(email, password, name, surname, phone, birthday, birthplace, role));
-  } else {
-    console.log('Cannot initialize the database!  Please invoke meteor with a settings file.');
-  }
-} */

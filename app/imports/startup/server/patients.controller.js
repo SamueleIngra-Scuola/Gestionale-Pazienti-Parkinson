@@ -10,7 +10,9 @@ Meteor.methods({
     try {
       const condition = findAll ?? false;
       let patientsList;
+
       if (condition) { patientsList = Patients.collection.find({}).fetch(); } else { patientsList = Patients.collection.find({ assistedBy: { $exists: false } }).fetch(); }
+
       return patientsList;
     } catch (e) {
       throw new Meteor.Error('patientslist-retrievalerror', `C'è stato un errore nella richiesta della lista di pazienti, Errore: ${e}`);
@@ -20,6 +22,7 @@ Meteor.methods({
     try {
       const { medicId } = body;
       const patientsList = Patients.collection.find({ assistedBy: medicId }).fetch();
+
       return patientsList;
     } catch (e) {
       throw new Meteor.Error('patientslist-retrievalerror', `C'è stato un errore nella richiesta della lista di pazienti, Errore: ${e}`);
@@ -29,6 +32,7 @@ Meteor.methods({
     try {
       const { patientId, medicId } = body;
       const patient = Patients.collection.findOne({ _id: patientId });
+
       if (isNil(patient.assistedBy)) {
         console.log('Ci siamo');
         Patients.collection.update({ _id: patientId }, {
@@ -37,8 +41,8 @@ Meteor.methods({
           },
         });
       }
-      throw new Meteor.Error('patient-already-assigned', 'Questo paziente è già stato preso');
 
+      throw new Meteor.Error('patient-already-assigned', 'Questo paziente è già stato preso');
     } catch (e) {
       throw new Meteor.Error('patient-assign-error', `C'è stato un errore nell'assegnazione del paziente, Errore: ${e}`);
     }
@@ -46,9 +50,9 @@ Meteor.methods({
   'unassistPatient': function (body) {
     const { patientId, medicId } = body;
     const patient = Patients.collection.findOne({ _id: patientId });
+
     try {
       if (!isNil(patient.assistedBy)) {
-        console.log('Ci sei!');
         Patients.collection.update({ _id: patientId }, {
           $unset: {
             'assistedBy': medicId,

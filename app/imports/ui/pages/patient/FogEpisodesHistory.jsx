@@ -1,17 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import '../../styles/HomeMedic.css';
-import { FileOutlined, UserOutlined, FolderOpenOutlined, ToolOutlined, TeamOutlined, UsergroupAddOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, Button,
-  Card,
-  Space,
-  Table,
-  Modal,
-  Popconfirm,
-  Form,
-  Input,
-  InputNumber,
-  DatePicker } from 'antd';
+import { Layout, Button, Card, Space, Table, Modal, Popconfirm, Form, InputNumber, DatePicker } from 'antd';
 import utc from 'dayjs/plugin/utc';
 import { useLocation } from 'react-router-dom';
 import SideBar from '../../components/SideBar';
@@ -20,7 +10,7 @@ const dayjs = require('dayjs');
 
 dayjs.extend(utc);
 
-const { Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 const FogEpisodesHistory = () => {
   const location = useLocation();
@@ -40,8 +30,6 @@ const FogEpisodesHistory = () => {
     setOpen(false);
   };
   const getFogEpisodes = (patientId) => {
-    console.log(patientId);
-    console.log(JSON.parse(localStorage.getItem('user'))._id);
     Meteor.call('getFogEpisodes', patientId, (_, result) => {
       setFogEpisodes(result); // Store the fetched data in the state variable
     });
@@ -52,11 +40,9 @@ const FogEpisodesHistory = () => {
   }, []);
 
   const upsertFogEpisode = (body) => {
-    console.log(body);
     const { length, distance, frequency, intensity } = body;
     let { episodedate } = body;
     episodedate = dayjs.utc(episodedate).format();
-    console.log(episodedate);
     const episode = {
       id: modalTask._id,
       patient: personalId,
@@ -75,16 +61,8 @@ const FogEpisodesHistory = () => {
 
   const editFogEpisode = (episode) => {
     setModalTaskId(episode);
-    console.log(episode);
     setModalState('Modifica');
     form.resetFields();
-    form.setFields([{
-      length: modalTask.length,
-      distance: modalTask.distance,
-      frequency: modalTask.frequency,
-      intensity: modalTask.intensity,
-      episodedate: modalTask.episodedate,
-    }]);
     setOpen(true);
   };
 

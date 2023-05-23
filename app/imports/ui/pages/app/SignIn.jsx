@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
-import SimpleSchema from 'simpl-schema';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import '../../styles/SignIn.css';
@@ -21,19 +17,10 @@ const SignIn = () => {
     navigate('/signup');
   };
   const submit = (doc) => {
-    // console.log('submit', doc, redirect);
-    /* Meteor.loginWithPassword(email, password, (err) => {
-      if (err) {
-        setError(err.reason);
-      } else {
-        setRedirect(true);
-      }
-    }); */
     Meteor.call('loginUserAccount', doc, (err, result) => {
       if (err) {
         setError(err.reason);
       } else {
-        console.log(localStorage.getItem('role'));
         localStorage.setItem('user', JSON.stringify(result.user));
         localStorage.setItem('role', result.role);
         setRedirect(true);
@@ -43,7 +30,7 @@ const SignIn = () => {
     // console.log('submit2', email, password, error, redirect);
   };
   if (redirectToHome) {
-    return <Navigate to="/panel/home" />;
+    navigate('/panel/home');
   }
   return (
     <Form

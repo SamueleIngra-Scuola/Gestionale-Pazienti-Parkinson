@@ -1,27 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Navigate, useNavigate } from 'react-router-dom';
-// import { Accounts } from 'meteor/accounts-base';
+import { useNavigate } from 'react-router-dom';
 import { Select, Button, Form, Input, DatePicker } from 'antd';
-import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-// import { dayjs } from 'dayjs';
-
-// eslint-disable-next-line no-var
-// var utc = require('dayjs/plugin/utc');
-
-// dayjs.extend(utc);
-
 /**
  * SignUp component is similar to signin component, but we create a new user instead.
  */
-const SignUp = ({ location }) => {
-
+const SignUp = () => {
   const [error, setError] = useState('');
   const [redirectToHome, setRedirect] = useState(false);
   const navigate = useNavigate();
@@ -31,14 +21,9 @@ const SignUp = ({ location }) => {
 
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc) => {
-    // eslint-disable-next-line global-require
-    // console.log(dayjs().utc().format('DD/MM/YYYY'));
-
-    // const { email, password } = doc;
     const { email, password, name, surname, prefix, phone, birthplace, role } = doc;
     let { birthday } = doc;
-    birthday = dayjs.utc(birthday).format(); // 2019-03-06T00:00:00Z
-
+    birthday = dayjs.utc(birthday).format();
     const account = {
       username: email,
       password: password,
@@ -50,21 +35,10 @@ const SignUp = ({ location }) => {
       role: role,
     };
 
-    /* Accounts.createUser({ email, username: email, password }, (err) => {
-      if (err) {
-        setError(err.reason);
-      } else {
-        setError('');
-        setRedirectToRef(true);
-      }
-    }); */
-    // birthday = dayjs.utc(birthday).format('DD/MM/YYYY');
-    // console.log(birthday);
     Meteor.call('createUserAccount', account, (err, result) => {
       if (err) {
         setError(err.reason);
       } else {
-        console.log(result.role);
         localStorage.setItem('user', JSON.stringify(result.user));
         localStorage.setItem('role', result.role);
         setRedirect(true);
@@ -75,7 +49,6 @@ const SignUp = ({ location }) => {
   };
 
   /* Display the signup form. Redirect to add page after successful registration and login. */
-  const { from } = location?.state || { from: { pathname: '/add' } };
   const formItemLayout = {
     labelCol: {
       xs: {
@@ -108,7 +81,7 @@ const SignUp = ({ location }) => {
   };
   // if correct authentication, redirect to from: page instead of signup screen
   if (redirectToHome) {
-    return <Navigate to="/panel/home" />;
+    navigate('/panel/home');
   }
   const { Option } = Select;
 
@@ -309,7 +282,7 @@ const SignUp = ({ location }) => {
         <Button type="primary" htmlType="submit">
           Registrati
         </Button>
-        <Button type="link" htmlType="submit" onClick={gotoLogin} style={{ marginLeft: 5 }}>
+        <Button type="link" onClick={gotoLogin} style={{ marginLeft: 5 }}>
           Hai già un account? Accedi qui
         </Button>
       </Form.Item>
@@ -324,16 +297,6 @@ const SignUp = ({ location }) => {
     </Form>
 
   );
-};
-/* Ensure that the React Router location object is available in case we need to redirect. */
-SignUp.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.string,
-  }),
-};
-
-SignUp.defaultProps = {
-  location: { state: '' },
 };
 
 export default SignUp;
