@@ -29,7 +29,7 @@ const AssistedPatientsList = () => {
   };
 
   const openTherapiesHistory = (patient) => {
-    navigate('/patient/therapieshistory', {
+    navigate('/panel/therapieshistory', {
       state: {
         patient: patient,
       },
@@ -37,7 +37,7 @@ const AssistedPatientsList = () => {
   };
 
   const openFogEpisodesHistory = (patient) => {
-    navigate('/patient/fogepisodeshistory', {
+    navigate('/panel/fogepisodeshistory', {
       state: {
         patient: patient,
       },
